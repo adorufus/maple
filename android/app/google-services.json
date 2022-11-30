@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "60519998695",
+    "project_id": "mapleapp-7c7ab",
+    "storage_bucket": "mapleapp-7c7ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60519998695:android:15e23584d2e4bbc0592e42",
+        "android_client_info": {
+          "package_name": "media.themaple.app.maple"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60519998695-4ek1e26b4j6u818l9c0ieo7iht3uuuoc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMj07hhYhbjdR-Ww1t7EWeDYPNQ30nNPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60519998695-4ek1e26b4j6u818l9c0ieo7iht3uuuoc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

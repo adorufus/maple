@@ -1,9 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/authentication/views/auth-screen.dart';
+import 'package:maple/firebase_options.dart';
 import 'package:maple/utils/colors.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+
   runApp(const MyApp());
 }
 
@@ -19,6 +27,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Maple',
           theme: ThemeData(
+            fontFamily: 'Bebas',
             primarySwatch: Colors.blue,
             textTheme: Typography.englishLike2021.apply(fontSizeFactor: 1.sp)
           ),
@@ -53,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: MapleColor.indigo,
       body: Center(
-        child: Image.asset('assets/images/logo-maple.png')
+        child: Image.asset('assets/images/logo-maple.png', width: 251.w, height: 65.26.h,)
       ),
     );
   }

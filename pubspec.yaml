@@ -12,6 +12,9 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.6.0
+  firebase_core: ^2.3.0
+  firebase_auth: ^4.1.4
+  cloud_firestore: ^4.1.0
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +25,21 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/fonts/
+
+  fonts:
+    - family: Bebas
+      fonts:
+        - asset: assets/fonts/Bebas-Neue/BebasNeue-Regular.ttf
+        - asset: assets/fonts/Bebas-Neue/BebasNeueBook.ttf
+          weight: 100
+        - asset: assets/fonts/Bebas-Neue/BebasNeueBold.ttf
+          weight: 700
+    
+    - family: Sequel
+      fonts:
+        - asset: assets/fonts/Sequel-Sans/ttf/Sequel-Sans-Black-Body.ttf
+        - asset: assets/fonts/Sequel-Sans/ttf/Sequel-Sans-Book-Body.ttf
+          weight: 100
+        - asset: assets/fonts/Sequel-Sans/ttf/Sequel-Sans-Bold-Body.ttf
+          weight: 700
