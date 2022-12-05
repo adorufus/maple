@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:maple/features/authentication/controllers/auth-controllers.dart';
+import 'package:maple/features/dashboard/dashboard-screen.dart';
+import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/widgets/maple-scaffold.dart';
+import 'package:maple/utils/widgets.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -79,7 +83,16 @@ class _AuthScreenState extends State<AuthScreen> {
                       fontFamily: 'Sequel',
                       fontWeight: FontWeight.w100),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  AuthControllers(AuthType.guest, context).doAuth().then((value){
+                    LocalStorageService.load('user').then((value){
+                      print(value);
+                      if(value["status"] == 'success') {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
+                      }
+                    });
+                  });
+                },
               ),
             )
           ],
@@ -90,58 +103,33 @@ class _AuthScreenState extends State<AuthScreen> {
 
   List<Widget> socialLoginButton() {
     return [
-      customIconButtom(
+      customButton(
         'Sign in with Google',
-        Image.asset(
+        () {
+          AuthControllers(AuthType.google, context).doAuth().then((res){
+            print(res);
+          });
+        },
+        icon: Image.asset(
           'assets/images/google.png',
           height: 32.h,
           width: 32.w,
         ),
-        () {},
       ),
       SizedBox(
         height: 16.h,
       ),
-      customIconButtom(
+      customButton(
         'Sign in with Apple',
-        Image.asset(
+        () {},
+        icon: Image.asset(
           'assets/images/apple.png',
           height: 32.h,
           width: 32.w,
         ),
-        () {},
       )
     ];
   }
 
-  Widget customIconButtom(String title, Widget icon, Function() onPressed) {
-    return ElevatedButton(
-      style: ButtonStyle(
-          padding: MaterialStateProperty.resolveWith((states) =>
-              EdgeInsets.symmetric(horizontal: 17.w, vertical: 14.h)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.r))),
-          backgroundColor: MaterialStateProperty.all(Colors.white)),
-      child: Row(
-        children: [
-          icon,
-          const Expanded(
-            child: SizedBox(),
-          ),
-          Text(
-            title,
-            style: TextStyle(
-                fontFamily: 'Sequel',
-                color: Colors.black,
-                fontWeight: FontWeight.w100),
-          ),
-          const Expanded(
-            child: SizedBox(),
-          ),
-        ],
-      ),
-      onPressed: onPressed,
-    );
-  }
+
 }

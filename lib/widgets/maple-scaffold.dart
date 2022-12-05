@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class MapleScaffold extends StatefulWidget {
 
   final bool isUsingAppbar;

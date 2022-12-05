@@ -2,8 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/authentication/views/auth-screen.dart';
+import 'package:maple/features/dashboard/dashboard-screen.dart';
+import 'package:maple/features/dashboard/providers/dashboard-providers.dart';
+import 'package:maple/features/introduction/views/introduction-screen.dart';
 import 'package:maple/firebase_options.dart';
+import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/utils/colors.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,7 +17,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform
   );
 
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<DashboardProviders>(create: (_) => DashboardProviders(),)
+  ], child: const MyApp(),));
 }
 
 class MyApp extends StatelessWidget {
@@ -52,9 +59,27 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(seconds: 3), () => {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => AuthScreen()))
+    Future.delayed(const Duration(seconds: 3), () async {
+      await isFirstTime() ? Navigator.push(context, MaterialPageRoute(builder: (context) => const IntroductionScreen())) : Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
     });
+  }
+
+  Future<bool> isFirstTime() async {
+    if(await LocalStorageService.check('user')) {
+      print(await LocalStorageService.load('user'));
+      Map<String, dynamic> data = await LocalStorageService.load('user');
+
+      return data['data']["is_first"] as bool;
+    } else {
+      await LocalStorageService.save('user', {
+        'status': 'success',
+        'data': {
+          'is_first': true,
+          'username': 'guest'
+        }
+      });
+      return true;
+    }
   }
 
   @override
