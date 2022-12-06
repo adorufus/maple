@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:maple/features/dashboard/home/views/home-screen.dart';
 import 'package:maple/features/dashboard/providers/dashboard-providers.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:maple/widgets/maple-scaffold.dart';
@@ -15,9 +16,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Widget> navWidget = [
-    Container(
-      color: Colors.red,
-    ),
+    HomeScreen(),
     Container(
       color: Colors.indigo,
     ),
@@ -35,8 +34,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: context.watch<DashboardProviders>().appBarColor,
+        elevation: 0,
         leading: Padding(
-          padding: EdgeInsets.only(left: 2.w),
+          padding: EdgeInsets.only(left: 20.w),
           child: Image.asset('assets/images/logo-maple-kecil.png'),
         ),
         leadingWidth: 108.81.w,

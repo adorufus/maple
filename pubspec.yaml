@@ -33,9 +33,7 @@ flutter:
   fonts:
     - family: Bebas
       fonts:
-        - asset: assets/fonts/Bebas-Neue/BebasNeue-Regular.ttf
         - asset: assets/fonts/Bebas-Neue/BebasNeueBook.ttf
-          weight: 100
         - asset: assets/fonts/Bebas-Neue/BebasNeueBold.ttf
           weight: 700
     
