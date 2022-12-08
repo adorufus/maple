@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/dashboard/home/views/home-screen.dart';
+import 'package:maple/features/dashboard/media/views/media-screen.dart';
 import 'package:maple/features/dashboard/providers/dashboard-providers.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:maple/widgets/maple-scaffold.dart';
@@ -20,9 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Container(
       color: Colors.indigo,
     ),
-    Container(
-      color: Colors.blue,
-    ),
+    MediaScreen(),
     Container(color: Colors.red),
     Container(
       color: Colors.black,
@@ -117,6 +116,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         activeColor: MapleColor.indigo,
         inactiveColor: MapleColor.white,
         onTap: (index) {
+          if(index == 0) {
+            context.read<DashboardProviders> ().setColor(MapleColor.indigo);
+            context.read<DashboardProviders>().setType('');
+          }
           context.read<DashboardProviders>().setNavIndex(index);
         },
         currentIndex: context.watch<DashboardProviders>().navIndex,

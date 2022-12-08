@@ -134,23 +134,53 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 width: ScreenUtil().screenWidth * 1.5,
                 child: FutureBuilder<QuerySnapshot>(
-                  future: FirebaseDatabase.get(reference: 'media-type').orderBy('created_time', descending: false).get(),
+                  future: FirebaseDatabase.get(reference: 'media-type')
+                      .orderBy('created_time', descending: false)
+                      .get(),
                   builder: (context, snapshot) {
-                    var data = snapshot.data!.docs;
-                    print(data.length);
-                    return Wrap(
-                      spacing: 10.h,
-                      runSpacing: 10.w,
-                      direction: Axis.horizontal,
-                      children: List.generate(
-                        data.length,
-                        (index) {
-                          data[index]['name'].toString().replaceAll(' ', '');
-                          return categoryButton(
-                              [data[index]['name'].toString().replaceAll(' ', '').substring(0, 3).toUpperCase(), data[index]['name'].toString().substring(3, data[index]['name'].toString().length).toUpperCase()], data[index]['width'].toDouble(), Color(int.parse('0xff' + data[index]['color'])));
-                        }
-                      ),
-                    );
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      var data = snapshot.data!.docs;
+                      if (snapshot.hasData) {
+                        print(data.length);
+                        return Wrap(
+                          spacing: 10.h,
+                          runSpacing: 10.w,
+                          direction: Axis.horizontal,
+                          children: List.generate(data.length, (index) {
+                            data[index]['name'].toString().replaceAll(' ', '');
+                            return categoryButton(
+                                [
+                                  data[index]['name']
+                                      .toString()
+                                      .replaceAll(' ', '')
+                                      .substring(0, 3)
+                                      .toUpperCase(),
+                                  data[index]['name']
+                                      .toString()
+                                      .substring(3,
+                                          data[index]['name'].toString().length)
+                                      .toUpperCase()
+                                ],
+                                data[index]['name'],
+                                index,
+                                data[index]['width'].toDouble(),
+                                Color(
+                                    int.parse('0xff' + data[index]['color'])));
+                          }),
+                        );
+                      } else {
+                        return Center(
+                          child: Text("No Media Yet :("),
+                        );
+                      }
+                    } else {
+                      return Container();
+                    }
                   },
                 ),
               ),
@@ -174,12 +204,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 24.sp,
                   ),
                 ),
-                TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'See all',
-                      style: TextStyle(color: Colors.white),
-                    ))
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {},
+                  child: Text(
+                    'See all',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
               ],
             ),
           ),
@@ -208,9 +240,152 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 20.h,
           ),
           latestMedia('Unscene'),
+          SizedBox(
+            height: 30.h,
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Latest article',
+                  style: TextStyle(
+                    fontFamily: 'Sequel',
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 24.sp,
+                  ),
+                ),
+                Expanded(child: SizedBox()),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {},
+                  child: Text(
+                    'See all',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+          latestArticle()
         ],
       ),
     );
+  }
+
+  Widget latestArticle() {
+    return FutureBuilder<QuerySnapshot>(
+        future: FirebaseDatabase.get(reference: 'articles').limit(3).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              var data = snapshot.data;
+              return Column(
+                children: [
+                  for (int i = 0; i < data!.docs.length; i++)
+                    Container(
+                      height: 195.h,
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Row(
+                        children: [
+                          i.isOdd
+                              ? Flexible(
+                                  child: Container(
+                                    width: 195.w,
+                                    child: Image.network(
+                                        data.docs[i]['content_image'],
+                                        fit: BoxFit.cover),
+                                  ),
+                                )
+                              : Flexible(
+                                  child: Container(
+                                    width: 195.w,
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(20.w),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          data.docs[i]['title'],
+                                          style: TextStyle(
+                                              fontFamily: 'Sequel',
+                                              fontSize: 14.sp,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Read more',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Sequel',
+                                              fontWeight: FontWeight.w100),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                          i.isOdd
+                              ? Flexible(
+                                  child: Container(
+                                    width: 195.w,
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(20.w),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          data.docs[i]['title'],
+                                          style: TextStyle(
+                                              fontFamily: 'Sequel',
+                                              fontSize: 14.sp,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Read more',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Sequel',
+                                              fontWeight: FontWeight.w100),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Flexible(
+                                  child: Container(
+                                    width: 195.w,
+                                    child: Image.network(
+                                        data.docs[i]['content_image'],
+                                        fit: BoxFit.cover),
+                                  ),
+                                )
+                        ],
+                      ),
+                    )
+                ],
+              );
+            } else {
+              return Center(
+                child: Text("No Articles Yet :("),
+              );
+            }
+          } else {
+            return Container();
+          }
+        });
   }
 
   Widget latestMedia(String segmentType) {
@@ -266,13 +441,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         SizedBox(
-                            width: (data.docs[i]['thumbnails']['medium']
-                                    ['width'] as int)
-                                .w,
-                            child: Text(
-                              data.docs[i]['title'],
-                              overflow: TextOverflow.ellipsis,
-                            ))
+                          width: (data.docs[i]['thumbnails']['medium']['width']
+                                  as int)
+                              .w,
+                          child: Text(
+                            data.docs[i]['title'],
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
                       ],
                     );
                   },
@@ -291,7 +467,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget categoryButton(List<String> name, double width, Color color) {
+  Widget categoryButton(List<String> name, String unformattedName, int index, double width, Color color) {
     return GestureDetector(
       onTap: () {
         if (color == MapleColor.white) {
@@ -299,6 +475,9 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           context.read<DashboardProviders>().setColor(color);
         }
+
+        context.read<DashboardProviders>().setType(unformattedName);
+        context.read<DashboardProviders>().setNavIndex(2);
       },
       child: Container(
         height: 57.h,
