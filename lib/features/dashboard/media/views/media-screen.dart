@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:maple/features/dashboard/media/views/media-details.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../services/database_service.dart';
@@ -37,8 +38,8 @@ class _MediaScreenState extends State<MediaScreen> {
                   text: TextSpan(
                     style: TextStyle(
                       color:
-                          context.watch<DashboardProviders>().selectedType != ''
-                              ? Colors.black
+                          context.watch<DashboardProviders>().selectedType != '' && context.watch<DashboardProviders>().selectedType != 'Unscene'
+                              ?  Colors.black
                               : MapleColor.white,
                     ),
                     children: [
@@ -168,7 +169,7 @@ class _MediaScreenState extends State<MediaScreen> {
                             );
                           } else {
                             return Center(
-                              child: Text("No Media Yet :("),
+                              child: Text("No Category Yet :("),
                             );
                           }
                         } else {
@@ -233,60 +234,58 @@ class _MediaScreenState extends State<MediaScreen> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                for (int i = 0; i < data!.docs.length; i++)
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 219.47.h,
-                                        width: 390.w,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                              data.docs[i]['thumbnails']
-                                                  ['standard']['url'],
+                                for (int i = 0; i < data.docs.length; i++)
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => MediaDetails(
+                                        title: data.docs[i]['title'],
+                                        type: data.docs[i]['type'],
+                                        description: data.docs[i]['description'],
+                                        typeColor: Color(int.parse('0xff' + data.docs[i]['color'])),
+                                        ytUrl: data.docs[i]['vidID'],
+                                      )));
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 219.47.h,
+                                          width: 390.w,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                data.docs[i]['thumbnails']
+                                                    ['standard']['url'],
+                                              ),
+                                              fit: BoxFit.cover,
                                             ),
-                                            fit: BoxFit.cover,
                                           ),
+                                          child: Center(
+                                              child: Image.asset(
+                                            'assets/images/play.png',
+                                            height: 32.h,
+                                            width: 32.w,
+                                          )),
                                         ),
-                                        child: Center(
-                                            child: Image.asset(
-                                          'assets/images/play.png',
-                                          height: 32.h,
-                                          width: 32.w,
-                                        )),
-                                      ),
-                                      Container(
-                                        height: 106.h,
-                                        width: ScreenUtil().screenWidth,
-                                        color: context
-                                            .watch<DashboardProviders>()
-                                            .appBarColor,
-                                        padding: EdgeInsets.all(20.w),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              data.docs[i]['title'],
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontFamily: 'Sequel',
-                                                  fontSize: 14.sp,
-                                                  color: context
-                                                              .watch<
-                                                                  DashboardProviders>()
-                                                              .selectedType ==
-                                                          'Unscene'
-                                                      ? Colors.white
-                                                      : Colors.black),
-                                            ),
-                                            Expanded(child: SizedBox()),
-                                            RichText(
-                                              text: TextSpan(
+                                        Container(
+                                          height: 106.h,
+                                          width: ScreenUtil().screenWidth,
+                                          color: context
+                                              .watch<DashboardProviders>()
+                                              .appBarColor,
+                                          padding: EdgeInsets.all(20.w),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                data.docs[i]['title'],
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
+                                                    fontFamily: 'Sequel',
+                                                    fontSize: 14.sp,
                                                     color: context
                                                                 .watch<
                                                                     DashboardProviders>()
@@ -294,25 +293,38 @@ class _MediaScreenState extends State<MediaScreen> {
                                                             'Unscene'
                                                         ? Colors.white
                                                         : Colors.black),
-                                                children: [
-                                                  TextSpan(
-                                                      text: splittedType[0],
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'Sequel')),
-                                                  TextSpan(
-                                                      text: splittedType[1],
-                                                      style: TextStyle(
-                                                          fontFamily: 'Bebas',
-                                                          fontWeight:
-                                                              FontWeight.bold))
-                                                ],
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                              Expanded(child: SizedBox()),
+                                              RichText(
+                                                text: TextSpan(
+                                                  style: TextStyle(
+                                                      color: context
+                                                                  .watch<
+                                                                      DashboardProviders>()
+                                                                  .selectedType ==
+                                                              'Unscene'
+                                                          ? Colors.white
+                                                          : Colors.black),
+                                                  children: [
+                                                    TextSpan(
+                                                        text: splittedType[0],
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Sequel')),
+                                                    TextSpan(
+                                                        text: splittedType[1],
+                                                        style: TextStyle(
+                                                            fontFamily: 'Bebas',
+                                                            fontWeight:
+                                                                FontWeight.bold))
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   )
                               ],
                             );
@@ -367,69 +379,78 @@ class _MediaScreenState extends State<MediaScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   for (int i = 0; i < data!.docs.length; i++)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 219.47.h,
-                          width: 390.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                data.docs[i]['thumbnails']['standard']['url'],
+                    GestureDetector(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MediaDetails(
+                        title: data.docs[i]['title'],
+                        type: data.docs[i]['type'],
+                        description: data.docs[i]['description'],
+                        typeColor: Color(int.parse('0xff' + data.docs[i]['color'])),
+                        ytUrl: data.docs[i]['vidID'],
+                      ))),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 219.47.h,
+                            width: 390.w,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  data.docs[i]['thumbnails']['standard']['url'],
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
+                            child: Center(
+                                child: Image.asset(
+                              'assets/images/play.png',
+                              height: 32.h,
+                              width: 32.w,
+                            )),
                           ),
-                          child: Center(
-                              child: Image.asset(
-                            'assets/images/play.png',
-                            height: 32.h,
-                            width: 32.w,
-                          )),
-                        ),
-                        Container(
-                          height: 106.h,
-                          width: ScreenUtil().screenWidth,
-                          color: color,
-                          padding: EdgeInsets.all(20.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                data.docs[i]['title'],
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontFamily: 'Sequel',
-                                    fontSize: 14.sp,
-                                    color: type == 'Unscene'
-                                        ? Colors.white
-                                        : Colors.black),
-                              ),
-                              Expanded(child: SizedBox()),
-                              RichText(
-                                text: TextSpan(
+                          Container(
+                            height: 106.h,
+                            width: ScreenUtil().screenWidth,
+                            color: color,
+                            padding: EdgeInsets.all(20.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.docs[i]['title'],
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
+                                      fontFamily: 'Sequel',
+                                      fontSize: 14.sp,
                                       color: type == 'Unscene'
                                           ? Colors.white
                                           : Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: text1,
-                                        style: TextStyle(fontFamily: 'Sequel')),
-                                    TextSpan(
-                                        text: text2,
-                                        style: TextStyle(
-                                            fontFamily: 'Bebas',
-                                            fontWeight: FontWeight.bold))
-                                  ],
                                 ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+                                Expanded(child: SizedBox()),
+                                RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                        color: type == 'Unscene'
+                                            ? Colors.white
+                                            : Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: text1,
+                                          style: TextStyle(fontFamily: 'Sequel')),
+                                      TextSpan(
+                                          text: text2,
+                                          style: TextStyle(
+                                              fontFamily: 'Bebas',
+                                              fontWeight: FontWeight.bold))
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     )
                 ],
               );

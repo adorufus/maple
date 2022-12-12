@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:maple/features/dashboard/articles/view/article-screen.dart';
 import 'package:maple/features/dashboard/home/views/home-screen.dart';
 import 'package:maple/features/dashboard/media/views/media-screen.dart';
+import 'package:maple/features/dashboard/merch/views/merch-screen.dart';
 import 'package:maple/features/dashboard/providers/dashboard-providers.dart';
 import 'package:maple/utils/colors.dart';
-import 'package:maple/widgets/maple-scaffold.dart';
 import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -18,13 +19,11 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Widget> navWidget = [
     HomeScreen(),
-    Container(
-      color: Colors.indigo,
-    ),
+    ArticleScreen(),
     MediaScreen(),
-    Container(color: Colors.red),
+    MerchScreen(),
     Container(
-      color: Colors.black,
+      color: Colors.red,
     ),
   ];
 
@@ -43,10 +42,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: [
           IconButton(
               onPressed: () {},
-              icon: Image.asset('assets/images/search-icon.png')),
+              icon: Image.asset(
+                'assets/images/search-icon.png',
+                color: context.watch<DashboardProviders>().appBarColor ==
+                        MapleColor.white
+                    ? Colors.black
+                    : Colors.white,
+              )),
           IconButton(
               onPressed: () {},
-              icon: Image.asset('assets/images/profile-icon.png'))
+              icon: Image.asset(
+                'assets/images/profile-icon.png',
+                color: context.watch<DashboardProviders>().appBarColor ==
+                        MapleColor.white
+                    ? Colors.black
+                    : Colors.white,
+              ))
         ],
       ),
       bottomNavigationBar: CupertinoTabBar(
@@ -116,10 +127,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         activeColor: MapleColor.indigo,
         inactiveColor: MapleColor.white,
         onTap: (index) {
-          if(index == 0) {
-            context.read<DashboardProviders> ().setColor(MapleColor.indigo);
-            context.read<DashboardProviders>().setType('');
+          context.read<DashboardProviders>().setColor(MapleColor.indigo);
+          if (index == 1) {
+            context.read<DashboardProviders>().setColor(MapleColor.white);
+          } else if(index == 3) {
+            context.read<DashboardProviders>().setColor(Colors.black);
           }
+
+          context.read<DashboardProviders>().setType('');
           context.read<DashboardProviders>().setNavIndex(index);
         },
         currentIndex: context.watch<DashboardProviders>().navIndex,

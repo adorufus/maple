@@ -8,6 +8,9 @@ import 'package:maple/services/database_service.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:provider/provider.dart';
 
+import '../../articles/view/article-detail-screen.dart';
+import '../../media/views/media-details.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -289,90 +292,102 @@ class _HomeScreenState extends State<HomeScreen> {
               return Column(
                 children: [
                   for (int i = 0; i < data!.docs.length; i++)
-                    Container(
-                      height: 195.h,
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Row(
-                        children: [
-                          i.isOdd
-                              ? Flexible(
-                                  child: Container(
-                                    width: 195.w,
-                                    child: Image.network(
-                                        data.docs[i]['content_image'],
-                                        fit: BoxFit.cover),
-                                  ),
-                                )
-                              : Flexible(
-                                  child: Container(
-                                    width: 195.w,
-                                    color: Colors.white,
-                                    padding: EdgeInsets.all(20.w),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          data.docs[i]['title'],
-                                          style: TextStyle(
-                                              fontFamily: 'Sequel',
-                                              fontSize: 14.sp,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Read more',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'Sequel',
-                                              fontWeight: FontWeight.w100),
-                                        )
-                                      ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ArticleDetailScreen(
+                              data: data.docs[i],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 195.h,
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Row(
+                          children: [
+                            i.isOdd
+                                ? Flexible(
+                                    child: Container(
+                                      width: 195.w,
+                                      child: Image.network(
+                                          data.docs[i]['content_image'],
+                                          fit: BoxFit.cover),
+                                    ),
+                                  )
+                                : Flexible(
+                                    child: Container(
+                                      width: 195.w,
+                                      color: Colors.white,
+                                      padding: EdgeInsets.all(20.w),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data.docs[i]['title'],
+                                            style: TextStyle(
+                                                fontFamily: 'Sequel',
+                                                fontSize: 14.sp,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            'Read more',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: 'Sequel',
+                                                fontWeight: FontWeight.w100),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                          i.isOdd
-                              ? Flexible(
-                                  child: Container(
-                                    width: 195.w,
-                                    color: Colors.white,
-                                    padding: EdgeInsets.all(20.w),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          data.docs[i]['title'],
-                                          style: TextStyle(
-                                              fontFamily: 'Sequel',
-                                              fontSize: 14.sp,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Read more',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'Sequel',
-                                              fontWeight: FontWeight.w100),
-                                        )
-                                      ],
+                            i.isOdd
+                                ? Flexible(
+                                    child: Container(
+                                      width: 195.w,
+                                      color: Colors.white,
+                                      padding: EdgeInsets.all(20.w),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data.docs[i]['title'],
+                                            style: TextStyle(
+                                                fontFamily: 'Sequel',
+                                                fontSize: 14.sp,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            'Read more',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: 'Sequel',
+                                                fontWeight: FontWeight.w100),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : Flexible(
-                                  child: Container(
-                                    width: 195.w,
-                                    child: Image.network(
-                                        data.docs[i]['content_image'],
-                                        fit: BoxFit.cover),
-                                  ),
-                                )
-                        ],
+                                  )
+                                : Flexible(
+                                    child: Container(
+                                      width: 195.w,
+                                      child: Image.network(
+                                          data.docs[i]['content_image'],
+                                          fit: BoxFit.cover),
+                                    ),
+                                  )
+                          ],
+                        ),
                       ),
                     )
                 ],
@@ -404,54 +419,73 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
               print(snapshot.hasData);
-              return Container(
-                height: 192.h,
-                child: ListView.builder(
-                  padding: EdgeInsets.only(left: 20.w),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: data!.docs.length,
-                  itemBuilder: (context, i) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: Container(
-                            height: (data.docs[i]['thumbnails']['medium']
-                                    ['height'] as int)
-                                .h,
-                            width: (data.docs[i]['thumbnails']['medium']
-                                    ['width'] as int)
-                                .w,
-                            margin: EdgeInsets.only(right: 14.w),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                  data.docs[i]['thumbnails']['medium']['url'],
+              return GestureDetector(
+                child: Container(
+                  height: 192.h,
+                  child: ListView.builder(
+                    padding: EdgeInsets.only(left: 20.w),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: data!.docs.length,
+                    itemBuilder: (context, i) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MediaDetails(
+                                        title: data.docs[i]['title'],
+                                        type: data.docs[i]['type'],
+                                        description: data.docs[i]
+                                            ['description'],
+                                        typeColor: Color(int.parse(
+                                            '0xff' + data.docs[i]['color'])),
+                                        ytUrl: data.docs[i]['vidID'],
+                                      )));
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: Container(
+                                height: (data.docs[i]['thumbnails']['medium']
+                                        ['height'] as int)
+                                    .h,
+                                width: (data.docs[i]['thumbnails']['medium']
+                                        ['width'] as int)
+                                    .w,
+                                margin: EdgeInsets.only(right: 14.w),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      data.docs[i]['thumbnails']['medium']
+                                          ['url'],
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4.r),
                                 ),
-                                fit: BoxFit.cover,
+                                child: Center(
+                                    child: Image.asset(
+                                  'assets/images/play.png',
+                                  height: 32.h,
+                                  width: 32.w,
+                                )),
                               ),
-                              borderRadius: BorderRadius.circular(4.r),
                             ),
-                            child: Center(
-                                child: Image.asset(
-                              'assets/images/play.png',
-                              height: 32.h,
-                              width: 32.w,
-                            )),
-                          ),
+                            SizedBox(
+                              width: (data.docs[i]['thumbnails']['medium']
+                                      ['width'] as int)
+                                  .w,
+                              child: Text(
+                                data.docs[i]['title'],
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          width: (data.docs[i]['thumbnails']['medium']['width']
-                                  as int)
-                              .w,
-                          child: Text(
-                            data.docs[i]['title'],
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               );
             } else {
@@ -467,7 +501,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget categoryButton(List<String> name, String unformattedName, int index, double width, Color color) {
+  Widget categoryButton(List<String> name, String unformattedName, int index,
+      double width, Color color) {
     return GestureDetector(
       onTap: () {
         if (color == MapleColor.white) {
