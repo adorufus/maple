@@ -5,7 +5,7 @@ class LocalStorageService {
     try {
       return await Glutton.eat(key, value);
     } on GluttonException catch (e) {
-      print(e);
+      print(e.toString());
       return false;
     }
   }

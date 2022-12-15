@@ -31,7 +31,8 @@ class AuthControllers {
         if (gAccount != null) {
           GoogleSignInAuthentication gAuth = await gAccount.authentication;
 
-          AuthCredential credential = GoogleAuthProvider.credential(accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+          AuthCredential credential = GoogleAuthProvider.credential(
+              accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
           try {
             userCredential = await auth.signInWithCredential(credential);
@@ -40,19 +41,45 @@ class AuthControllers {
 
             String username = user!.email!.split('@')[0];
 
-            var snapshot = await FirebaseDatabase.firestore.collection('users').doc(user.uid).get();
+            var snapshot = await FirebaseDatabase.firestore
+                .collection('users')
+                .doc(user.uid)
+                .get();
 
             if (!snapshot.exists) {
-              await FirebaseDatabase.post(reference: 'users', doc: user.uid, data: {'email': user.email, 'is_first': true, 'user_id': user.uid, 'username': username, 'role': 'use'
-                  'r'})
-                  .then((value) async {
+              await FirebaseDatabase.post(
+                  reference: 'users',
+                  doc: user.uid,
+                  data: {
+                    'email': user.email,
+                    'is_first': true,
+                    'user_id': user.uid,
+                    'username': username,
+                    'role': 'user',
+                    'user_picture': user.photoURL
+                  }).then((value) async {
                 dat0 = {
                   "status": 'success',
-                  "data": {'email': user?.email, 'is_first': true, 'role': 'user', 'user_id': user?.uid, 'username': username}
+                  "data": {
+                    'email': user?.email,
+                    'is_first': true,
+                    'role': 'user',
+                    'user_id': user?.uid,
+                    'username': username,
+                    'user_picture': user?.photoURL
+                  }
                 };
 
                 await LocalStorageService.save('user', dat0);
               });
+            } else {
+              var userData = await FirebaseDatabase.getSingle(
+                  collection: 'users', itemId: user.uid);
+
+              dat0 = {'status': 'success', 'data': userData};
+
+              await LocalStorageService.save('user', dat0);
+              print('userData: ' + userData.toString());
             }
           } on FirebaseAuthException catch (e) {
             print(e.message);

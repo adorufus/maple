@@ -84,11 +84,16 @@ class _AuthScreenState extends State<AuthScreen> {
                       fontWeight: FontWeight.w100),
                 ),
                 onPressed: () {
-                  AuthControllers(AuthType.guest, context).doAuth().then((value){
-                    LocalStorageService.load('user').then((value){
+                  AuthControllers(AuthType.guest, context)
+                      .doAuth()
+                      .then((value) {
+                    LocalStorageService.load('user').then((value) {
                       print(value);
-                      if(value["status"] == 'success') {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
+                      if (value["status"] == 'success') {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DashboardScreen()));
                       }
                     });
                   });
@@ -106,8 +111,17 @@ class _AuthScreenState extends State<AuthScreen> {
       customButton(
         'Sign in with Google',
         () {
-          AuthControllers(AuthType.google, context).doAuth().then((res){
+          AuthControllers(AuthType.google, context).doAuth().then((res) {
             print(res);
+            LocalStorageService.load('user').then((value) {
+              print(value);
+              if (value["status"] == 'success') {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DashboardScreen()));
+              }
+            });
           });
         },
         icon: Image.asset(
@@ -130,6 +144,4 @@ class _AuthScreenState extends State<AuthScreen> {
       )
     ];
   }
-
-
 }

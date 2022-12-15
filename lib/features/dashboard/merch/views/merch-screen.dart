@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:maple/features/dashboard/merch/views/merch-details.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../utils/colors.dart';
@@ -73,7 +74,9 @@ class _MerchScreenState extends State<MerchScreen> {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MerchDetails(imageUrl: 'assets/images/merch1-detail.png')));
+            },
             child: Container(
               child: Image.asset('assets/images/merch1.png'),
             ),

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:maple/widgets/maple-scaffold.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +66,9 @@ class _MediaDetailsState extends State<MediaDetails> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await FlutterShare.share(title: widget.title, text: 'Check Out This Video', linkUrl: 'https://youtube.com/${widget.ytUrl}');
+            },
             icon: Image.asset(
               'assets/images/share-button.png',
               height: 36.h,
