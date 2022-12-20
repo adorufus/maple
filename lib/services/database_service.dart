@@ -35,6 +35,11 @@ class FirebaseDatabase {
     return data;
   }
 
+  static Future<DocumentSnapshot<Map<String, dynamic>>> documentSnapshot(
+      {required String collection, required String itemId}) async {
+    return await firestore.collection(collection).doc(itemId).get();
+  }
+
   static CollectionReference get({required String reference}) {
     return firestore.collection(reference);
   }

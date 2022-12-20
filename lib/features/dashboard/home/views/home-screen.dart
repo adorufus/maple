@@ -24,10 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     print('bangat');
-    HomeControllers.getUsername().then((value) {
-      username = value;
-      setState(() {});
-    });
     super.initState();
   }
 
@@ -52,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w100,
                         color: MapleColor.white)),
                 TextSpan(
-                    text: "${username.toUpperCase()}",
+                    text: "${context.watch<DashboardProviders>().username.toUpperCase()}",
                     style: TextStyle(
                         fontFamily: 'Bebas',
                         fontSize: 24.sp,
@@ -440,6 +436,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         typeColor: Color(int.parse(
                                             '0xff' + data.docs[i]['color'])),
                                         ytUrl: data.docs[i]['vidID'],
+                                    mediaId: data.docs[i].id,
                                       )));
                         },
                         child: Column(

@@ -37,10 +37,14 @@ class _MediaScreenState extends State<MediaScreen> {
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                      color:
-                          context.watch<DashboardProviders>().selectedType != '' && context.watch<DashboardProviders>().selectedType != 'Unscene'
-                              ?  Colors.black
-                              : MapleColor.white,
+                      color: context.watch<DashboardProviders>().selectedType !=
+                                  '' &&
+                              context
+                                      .watch<DashboardProviders>()
+                                      .selectedType !=
+                                  'Unscene'
+                          ? Colors.black
+                          : MapleColor.white,
                     ),
                     children: [
                       TextSpan(
@@ -208,7 +212,9 @@ class _MediaScreenState extends State<MediaScreen> {
                       future: FirebaseDatabase.get(reference: 'media')
                           .where(
                             'type',
-                            isEqualTo: context.watch<DashboardProviders>().selectedType,
+                            isEqualTo: context
+                                .watch<DashboardProviders>()
+                                .selectedType,
                           )
                           .get(),
                       builder: (context, snapshot) {
@@ -219,7 +225,6 @@ class _MediaScreenState extends State<MediaScreen> {
                           );
                         } else if (snapshot.connectionState ==
                             ConnectionState.done) {
-
                           String type =
                               context.watch<DashboardProviders>().selectedType;
                           List splittedType = [
@@ -237,18 +242,30 @@ class _MediaScreenState extends State<MediaScreen> {
                                 for (int i = 0; i < data.docs.length; i++)
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => MediaDetails(
-                                        title: data.docs[i]['title'],
-                                        type: data.docs[i]['type'],
-                                        description: data.docs[i]['description'],
-                                        typeColor: Color(int.parse('0xff' + data.docs[i]['color'])),
-                                        ytUrl: data.docs[i]['vidID'],
-                                      )));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MediaDetails(
+                                                    title: data.docs[i]
+                                                        ['title'],
+                                                    type: data.docs[i]['type'],
+                                                    description: data.docs[i]
+                                                        ['description'],
+                                                    typeColor: Color(int.parse(
+                                                        '0xff' +
+                                                            data.docs[i]
+                                                                ['color'])),
+                                                    ytUrl: data.docs[i]
+                                                        ['vidID'],
+                                                    mediaId: data.docs[i].id,
+                                                  )));
                                     },
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Container(
                                           height: 219.47.h,
@@ -316,7 +333,8 @@ class _MediaScreenState extends State<MediaScreen> {
                                                         style: TextStyle(
                                                             fontFamily: 'Bebas',
                                                             fontWeight:
-                                                                FontWeight.bold))
+                                                                FontWeight
+                                                                    .bold))
                                                   ],
                                                 ),
                                               )
@@ -380,13 +398,18 @@ class _MediaScreenState extends State<MediaScreen> {
                 children: [
                   for (int i = 0; i < data!.docs.length; i++)
                     GestureDetector(
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MediaDetails(
-                        title: data.docs[i]['title'],
-                        type: data.docs[i]['type'],
-                        description: data.docs[i]['description'],
-                        typeColor: Color(int.parse('0xff' + data.docs[i]['color'])),
-                        ytUrl: data.docs[i]['vidID'],
-                      ))),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MediaDetails(
+                                    title: data.docs[i]['title'],
+                                    type: data.docs[i]['type'],
+                                    description: data.docs[i]['description'],
+                                    typeColor: Color(int.parse(
+                                        '0xff' + data.docs[i]['color'])),
+                                    ytUrl: data.docs[i]['vidID'],
+                                    mediaId: data.docs[i].id,
+                                  ))),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -437,7 +460,8 @@ class _MediaScreenState extends State<MediaScreen> {
                                     children: [
                                       TextSpan(
                                           text: text1,
-                                          style: TextStyle(fontFamily: 'Sequel')),
+                                          style:
+                                              TextStyle(fontFamily: 'Sequel')),
                                       TextSpan(
                                           text: text2,
                                           style: TextStyle(

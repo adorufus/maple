@@ -5,9 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:maple/features/profile/views/edit-profile.dart';
 import 'package:maple/services/database_service.dart';
 import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/utils/colors.dart';
+import 'package:provider/provider.dart';
+
+import '../../dashboard/providers/dashboard-providers.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -70,7 +74,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: Text('Settings'),
                       actions: [
                         CupertinoActionSheetAction(
-                            onPressed: () {}, child: Text('Edit Profile')),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditProfile(
+                                            userData: {
+                                              'full_name': userData['data']
+                                                  ['full_name'],
+                                              'username': userData['data']
+                                                  ['username'],
+                                              'user_id': userData['data']
+                                                  ['user_id']
+                                            },
+                                          ))).then((value) {
+                                getUserData();
+                              });
+                            },
+                            child: Text('Edit Profile')),
                         CupertinoActionSheetAction(
                             onPressed: () async {
                               Navigator.pop(context);
@@ -171,14 +192,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              userData['data']['username'] ?? '',
+                              userData['data']['full_name'] ?? '',
                               style: TextStyle(
                                   fontFamily: 'Sequel',
                                   fontWeight: FontWeight.w400,
                                   fontSize: 35.sp),
                             ),
                             Text(
-                              '@' + userData['data']['username'] ?? '',
+                              '@' +
+                                      context
+                                          .watch<DashboardProviders>()
+                                          .username ??
+                                  '',
                               style: TextStyle(
                                   fontFamily: 'Sequel',
                                   fontWeight: FontWeight.w100,

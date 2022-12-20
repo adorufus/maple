@@ -7,6 +7,7 @@ import 'package:maple/features/dashboard/home/views/home-screen.dart';
 import 'package:maple/features/dashboard/media/views/media-screen.dart';
 import 'package:maple/features/dashboard/merch/views/merch-screen.dart';
 import 'package:maple/features/dashboard/providers/dashboard-providers.dart';
+import 'package:maple/features/dashboard/search-view.dart';
 import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchView()));
+              },
               icon: Image.asset(
                 'assets/images/search-icon.png',
                 color: context.watch<DashboardProviders>().appBarColor ==

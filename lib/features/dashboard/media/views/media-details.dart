@@ -3,6 +3,7 @@ import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:maple/widgets/maple-scaffold.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class MediaDetails extends StatefulWidget {
   final Color typeColor;
   final String title;
   final String description;
+  final String mediaId;
 
   const MediaDetails(
       {Key? key,
@@ -24,7 +26,8 @@ class MediaDetails extends StatefulWidget {
       required this.ytUrl,
       required this.typeColor,
       required this.title,
-      required this.description})
+      required this.description,
+      required this.mediaId})
       : super(key: key);
 
   @override
@@ -33,6 +36,7 @@ class MediaDetails extends StatefulWidget {
 
 class _MediaDetailsState extends State<MediaDetails> {
   YoutubePlayerController? playerController;
+  String currentLoggedIn = '';
 
   @override
   void initState() {
@@ -40,9 +44,14 @@ class _MediaDetailsState extends State<MediaDetails> {
         initialVideoId: widget.ytUrl,
         flags:
             YoutubePlayerFlags(autoPlay: true, controlsVisibleAtStart: false));
+
+    LocalStorageService.load('user').then((value) {
+      currentLoggedIn = value['data']['username'];
+
+      setState(() {});
+    });
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -67,7 +76,10 @@ class _MediaDetailsState extends State<MediaDetails> {
         actions: [
           IconButton(
             onPressed: () async {
-              await FlutterShare.share(title: widget.title, text: 'Check Out This Video', linkUrl: 'https://youtube.com/${widget.ytUrl}');
+              await FlutterShare.share(
+                  title: widget.title,
+                  text: 'Check Out This Video',
+                  linkUrl: 'https://youtube.com/${widget.ytUrl}');
             },
             icon: Image.asset(
               'assets/images/share-button.png',
@@ -115,6 +127,101 @@ class _MediaDetailsState extends State<MediaDetails> {
                           fontWeight: FontWeight.w100,
                           fontSize: 14.sp),
                     ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FutureBuilder<
+                              DocumentSnapshot<Map<String, dynamic>>>(
+                          future: FirebaseDatabase.documentSnapshot(
+                              collection: 'media', itemId: widget.mediaId),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Icon(
+                                Icons.favorite_outlined,
+                                color: MapleColor.black,
+                                size: 32.w,
+                              );
+                            } else {
+                              if (snapshot.hasData) {
+                                Map<String, dynamic>? data =
+                                    snapshot.data?.data();
+
+                                return Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        if (!data
+                                            .containsKey('people_who_likes')) {
+                                          FirebaseDatabase.put(
+                                              reference: 'media',
+                                              doc: widget.mediaId,
+                                              data: {
+                                                'people_who_likes': [
+                                                  currentLoggedIn
+                                                ]
+                                              });
+
+                                          setState(() {});
+                                        } else if (!data['people_who_likes']
+                                            .contains(currentLoggedIn)) {
+                                          FirebaseDatabase.put(
+                                              reference: 'media',
+                                              doc: widget.mediaId,
+                                              data: {
+                                                'people_who_likes': [
+                                                  currentLoggedIn
+                                                ]
+                                              });
+
+                                          setState(() {});
+                                        } else {
+                                          FirebaseDatabase.put(
+                                              reference: 'media',
+                                              doc: widget.mediaId,
+                                              data: {
+                                                'people_who_likes':
+                                                    FieldValue.arrayRemove(
+                                                        [currentLoggedIn])
+                                              });
+
+                                          setState(() {});
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.favorite_outlined,
+                                        color: !data!
+                                                .containsKey('people_who_likes')
+                                            ? Colors.black
+                                            : !(data['people_who_likes']
+                                                        as List)
+                                                    .contains(currentLoggedIn)
+                                                ? Colors.black
+                                                : MapleColor.indigo,
+                                        size: 32.w,
+                                      ),
+                                    ),
+                                    // !data.containsKey('people_who_likes')
+                                    //     ? Container()
+                                    //     : !(data['people_who_likes']
+                                    //                 as List<dynamic>)
+                                    //             .contains(currentLoggedIn)
+                                    //         ? Container()
+                                    //         : Text(data['people_who_likes']
+                                    //                 .length
+                                    //                 .toString() ??
+                                    //             '')
+                                  ],
+                                );
+                              } else {
+                                return Icon(
+                                    Icons.favorite_outlined,
+                                    color: MapleColor.black,
+                                    size: 32.w,
+                                );
+                              }
+                            }
+                          }),
+                    )
                   ],
                 ),
               ),
@@ -137,21 +244,19 @@ class _MediaDetailsState extends State<MediaDetails> {
               FutureBuilder<QuerySnapshot>(
                   future: FirebaseDatabase.get(reference: 'media')
                       .where(
-                    'type',
-                    isEqualTo: widget.type,
-                  ).where('title', isNotEqualTo: widget.title)
+                        'type',
+                        isEqualTo: widget.type,
+                      )
+                      .where('title', isNotEqualTo: widget.title)
                       .get(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (snapshot.connectionState ==
                         ConnectionState.done) {
-
-                      String type =
-                          widget.type;
+                      String type = widget.type;
                       List splittedType = [
                         type.substring(0, 3),
                         type.substring(3, type.length)
@@ -167,17 +272,23 @@ class _MediaDetailsState extends State<MediaDetails> {
                             for (int i = 0; i < data.docs.length; i++)
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => MediaDetails(
-                                    title: data.docs[i]['title'],
-                                    type: data.docs[i]['type'],
-                                    description: data.docs[i]['description'],
-                                    typeColor: Color(int.parse('0xff' + data.docs[i]['color'])),
-                                    ytUrl: data.docs[i]['vidID'],
-                                  )));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MediaDetails(
+                                                title: data.docs[i]['title'],
+                                                type: data.docs[i]['type'],
+                                                description: data.docs[i]
+                                                    ['description'],
+                                                typeColor: Color(int.parse(
+                                                    '0xff' +
+                                                        data.docs[i]['color'])),
+                                                ytUrl: data.docs[i]['vidID'],
+                                                mediaId: data.docs[i].id,
+                                              )));
                                 },
                                 child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
@@ -187,17 +298,17 @@ class _MediaDetailsState extends State<MediaDetails> {
                                         image: DecorationImage(
                                           image: NetworkImage(
                                             data.docs[i]['thumbnails']
-                                            ['standard']['url'],
+                                                ['standard']['url'],
                                           ),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                       child: Center(
                                           child: Image.asset(
-                                            'assets/images/play.png',
-                                            height: 32.h,
-                                            width: 32.w,
-                                          )),
+                                        'assets/images/play.png',
+                                        height: 32.h,
+                                        width: 32.w,
+                                      )),
                                     ),
                                     Container(
                                       height: 106.h,
@@ -206,7 +317,7 @@ class _MediaDetailsState extends State<MediaDetails> {
                                       padding: EdgeInsets.all(20.w),
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             data.docs[i]['title'],
@@ -215,10 +326,10 @@ class _MediaDetailsState extends State<MediaDetails> {
                                                 fontFamily: 'Sequel',
                                                 fontSize: 14.sp,
                                                 color: context
-                                                    .watch<
-                                                    DashboardProviders>()
-                                                    .selectedType ==
-                                                    'Unscene'
+                                                            .watch<
+                                                                DashboardProviders>()
+                                                            .selectedType ==
+                                                        'Unscene'
                                                     ? Colors.white
                                                     : Colors.black),
                                           ),
@@ -227,24 +338,23 @@ class _MediaDetailsState extends State<MediaDetails> {
                                             text: TextSpan(
                                               style: TextStyle(
                                                   color: context
-                                                      .watch<
-                                                      DashboardProviders>()
-                                                      .selectedType ==
-                                                      'Unscene'
+                                                              .watch<
+                                                                  DashboardProviders>()
+                                                              .selectedType ==
+                                                          'Unscene'
                                                       ? Colors.white
                                                       : Colors.black),
                                               children: [
                                                 TextSpan(
                                                     text: splittedType[0],
                                                     style: TextStyle(
-                                                        fontFamily:
-                                                        'Sequel')),
+                                                        fontFamily: 'Sequel')),
                                                 TextSpan(
                                                     text: splittedType[1],
                                                     style: TextStyle(
                                                         fontFamily: 'Bebas',
                                                         fontWeight:
-                                                        FontWeight.bold))
+                                                            FontWeight.bold))
                                               ],
                                             ),
                                           )
