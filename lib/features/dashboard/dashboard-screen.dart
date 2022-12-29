@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/authentication/views/auth-screen.dart';
+import 'package:maple/features/dashboard/activty/view/activity-screen.dart';
 import 'package:maple/features/dashboard/articles/view/article-screen.dart';
 import 'package:maple/features/dashboard/home/views/home-screen.dart';
 import 'package:maple/features/dashboard/media/views/media-screen.dart';
@@ -27,9 +28,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ArticleScreen(),
     MediaScreen(),
     MerchScreen(),
-    Container(
-      color: Colors.red,
-    ),
+    ActivityScreen()
   ];
 
   @override

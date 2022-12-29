@@ -310,6 +310,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 195.w,
                                       child: Image.network(
                                           data.docs[i]['content_image'],
+                                          height: 195.h,
+                                          width: 195.h,
                                           fit: BoxFit.cover),
                                     ),
                                   )
@@ -379,6 +381,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 195.w,
                                       child: Image.network(
                                           data.docs[i]['content_image'],
+                                          height: 195.h,
+                                          width: 195.h,
                                           fit: BoxFit.cover),
                                     ),
                                   )

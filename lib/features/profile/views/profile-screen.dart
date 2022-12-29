@@ -1,15 +1,20 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:maple/features/authentication/views/auth-screen.dart';
+import 'package:maple/features/profile/views/about-screen.dart';
 import 'package:maple/features/profile/views/edit-profile.dart';
 import 'package:maple/services/database_service.dart';
 import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:provider/provider.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 
 import '../../dashboard/providers/dashboard-providers.dart';
 
@@ -119,11 +124,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: Text('Change Profile Picture')),
                         CupertinoActionSheetAction(
-                            onPressed: () {}, child: Text('Rate Our App')),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return RatingDialog(
+                                      title: Text("How's Maple App?", style: TextStyle(color: Colors.black),),
+                                      submitButtonText: 'Rate',
+                                      enableComment: true,
+                                      force: false,
+                                      onCancelled: () {
+                                        Navigator.pop(context);
+                                      },
+                                      showCloseButton: true,
+                                      message:
+                                          Text('Rate Maple App if you like it', style: TextStyle(color: Colors.black),),
+                                      onSubmitted: (response) {},
+                                    );
+                                  });
+                            },
+                            child: Text('Rate Our App')),
                         CupertinoActionSheetAction(
-                            onPressed: () {}, child: Text('About Maple')),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AboutScreen()));
+                            },
+                            child: Text('About Maple')),
                         CupertinoActionSheetAction(
-                          onPressed: () {},
+                          onPressed: () {
+                            isLoading = true;
+                            setState(() {});
+                            FirebaseAuth.instance.signOut().then((value) {
+                              LocalStorageService.deleteAll();
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AuthScreen()),
+                                  (route) => false);
+                            }).catchError((err) {
+                              isLoading = false;
+                              setState(() {});
+                              print(err);
+                              Flushbar(
+                                backgroundColor: Colors.red,
+                                message:
+                                    'Something went wrong while we trying to sign you out',
+                              ).show(context);
+                            });
+                          },
                           child: Text(
                             'Sign Out',
                             style: TextStyle(color: Colors.red),

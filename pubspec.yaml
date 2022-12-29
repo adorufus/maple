@@ -23,6 +23,8 @@ dependencies:
   esys_flutter_share_plus: ^2.2.0
   flutter_share: ^2.0.0
   image_picker: ^0.8.6
+  rating_dialog: ^2.0.4
+  webview_flutter: ^2.0.4
   another_flushbar:
   glutton:
 

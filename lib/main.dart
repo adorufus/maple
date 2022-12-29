@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Maple',
           theme: ThemeData(
-            fontFamily: 'Bebas',
             primarySwatch: Colors.blue,
             textTheme: Typography.englishLike2021.apply(fontSizeFactor: 1.sp)
           ),

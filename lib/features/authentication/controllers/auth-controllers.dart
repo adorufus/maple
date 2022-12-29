@@ -41,14 +41,13 @@ class AuthControllers {
 
             user = userCredential.user;
 
-            String username = user!.email!.split('@')[0];
-
             var snapshot = await FirebaseDatabase.firestore
                 .collection('users')
-                .doc(user.uid)
+                .doc(user?.uid)
                 .get();
 
             if (!snapshot.exists) {
+              String username = user!.email!.split('@')[0];
               await FirebaseDatabase.post(
                   reference: 'users',
                   doc: user.uid,
@@ -81,12 +80,12 @@ class AuthControllers {
               });
             } else {
               var userData = await FirebaseDatabase.getSingle(
-                  collection: 'users', itemId: user.uid);
+                  collection: 'users', itemId: user?.uid);
 
               dat0 = {'status': 'success', 'data': userData};
 
-              context.read<DashboardProviders>().setUsername(username);
-              context.read<DashboardProviders>().setFullName(user.displayName ?? '');
+              context.read<DashboardProviders>().setUsername(userData['username']);
+              context.read<DashboardProviders>().setFullName(user?.displayName ?? '');
 
               await LocalStorageService.save('user', dat0);
               print('userData: ' + userData.toString());
