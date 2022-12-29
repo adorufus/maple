@@ -47,49 +47,49 @@ class _IntroductionScreenState extends State<IntroductionScreen>
     return MapleScaffold(
         isUsingAppbar: false,
         backgroundColor: Colors.black,
-        body: Container(
-          height: ScreenUtil().screenHeight,
-          width: ScreenUtil().screenWidth,
-          child: SafeArea(
+        body: SafeArea(
+          child: SizedBox(
+            height: ScreenUtil().screenHeight,
+            width: ScreenUtil().screenWidth,
             child: Column(
-              children: [
-                Image.asset(
-                  images[currentIndex],
-                  height: 701.h,
-                  width: 390.w,
-                ),
-                SizedBox(
-                  height: 53.h,
-                ),
-                currentIndex == 2
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: customButton('Get Started', () async {
-                          Map<String, dynamic> data =
-                              await LocalStorageService.load('user');
-                          data["data"]["is_first"] = false;
+                children: [
+                  Image.asset(
+                    images[currentIndex],
+                    height: 701.h,
+                    width: 390.w,
+                  ),
+                  SizedBox(
+                    height: 53.h,
+                  ),
+                  currentIndex == 2
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: customButton('Get Started', () async {
+                            Map<String, dynamic> data =
+                                await LocalStorageService.load('user');
+                            data["data"]["is_first"] = false;
 
-                          LocalStorageService.save('user', data).then((value) {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const DashboardScreen()));
-                          });
-                        }),
-                      )
-                    : IconButton(
-                        onPressed: () {
-                          currentIndex += 1;
-                          setState(() {});
-                        },
-                        icon: Image.asset(
-                          'assets/images/next-button.png',
-                          height: 36.h,
-                          width: 36.h,
-                        ))
-              ],
-            ),
+                            LocalStorageService.save('user', data).then((value) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DashboardScreen()));
+                            });
+                          }),
+                        )
+                      : IconButton(
+                          onPressed: () {
+                            currentIndex += 1;
+                            setState(() {});
+                          },
+                          icon: Image.asset(
+                            'assets/images/next-button.png',
+                            height: 36.h,
+                            width: 36.h,
+                          ))
+                ],
+              ),
           ),
         ));
   }

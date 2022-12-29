@@ -27,6 +27,7 @@ dependencies:
   webview_flutter: ^2.0.4
   another_flushbar:
   glutton:
+  url_launcher: ^6.1.7
 
 dev_dependencies:
   flutter_test:

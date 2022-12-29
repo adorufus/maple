@@ -75,7 +75,7 @@ class _MerchScreenState extends State<MerchScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MerchDetails(imageUrl: 'assets/images/merch1-detail.png')));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MerchDetails(imageUrl: 'assets/images/merch1-detail.png', url: "https://tokopedia.link/QgTOflmr9vb")));
             },
             child: Container(
               child: Image.asset('assets/images/merch1.png'),

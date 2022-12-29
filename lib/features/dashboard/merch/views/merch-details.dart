@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MerchDetails extends StatefulWidget {
   final String imageUrl;
+  final String url;
 
-  const MerchDetails({Key? key, required this.imageUrl}) : super(key: key);
+  const MerchDetails({Key? key, required this.imageUrl, required this.url}) : super(key: key);
 
   @override
   State<MerchDetails> createState() => _MerchDetailsState();
@@ -40,7 +42,11 @@ class _MerchDetailsState extends State<MerchDetails> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  if(!await launchUrl(Uri.parse(widget.url))){
+                    print('Couldnt launch');
+                  }
+                },
                 child: Container(
                   height: 54,
                   margin: EdgeInsets.symmetric(horizontal: 20.w),
