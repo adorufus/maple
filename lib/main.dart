@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/authentication/views/auth-screen.dart';
 import 'package:maple/features/dashboard/dashboard-screen.dart';
@@ -16,6 +17,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<DashboardProviders>(create: (_) => DashboardProviders(),)

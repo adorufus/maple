@@ -1,6 +1,8 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:maple/services/local_storage_service.dart';
@@ -43,7 +45,7 @@ class _MediaDetailsState extends State<MediaDetails> {
     playerController = YoutubePlayerController(
         initialVideoId: widget.ytUrl,
         flags:
-            YoutubePlayerFlags(autoPlay: true, controlsVisibleAtStart: false));
+            YoutubePlayerFlags(autoPlay: true,  controlsVisibleAtStart: false));
 
     LocalStorageService.load('user').then((value) {
       currentLoggedIn = value['data']['username'];
@@ -76,6 +78,20 @@ class _MediaDetailsState extends State<MediaDetails> {
         actions: [
           IconButton(
             onPressed: () async {
+
+              await Clipboard.setData(ClipboardData(text: 'https://youtube.com/${widget.ytUrl}'));
+              Flushbar(
+                flushbarPosition: FlushbarPosition.TOP,
+                duration: Duration(
+                  seconds: 3
+                ),
+                message: "Link Copied!",
+              ).show(context);
+            },
+            icon: Icon(Icons.link)
+          ),
+          IconButton(
+            onPressed: () async {
               await FlutterShare.share(
                   title: widget.title,
                   text: 'Check Out This Video',
@@ -103,6 +119,19 @@ class _MediaDetailsState extends State<MediaDetails> {
                 progressColors: ProgressBarColors(
                     playedColor: MapleColor.indigo,
                     handleColor: MapleColor.indigo),
+                bottomActions: [
+                  const SizedBox(width: 14.0),
+                  CurrentPosition(),
+                  const SizedBox(width: 8.0),
+                  ProgressBar(
+                    isExpanded: true,
+                    colors: ProgressBarColors(
+                        playedColor: MapleColor.indigo,
+                        handleColor: MapleColor.indigo),
+                  ),
+                  RemainingDuration(),
+                  FullScreenButton(),
+                ],
               ),
               Container(
                 color: widget.typeColor,

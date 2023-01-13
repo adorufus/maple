@@ -75,7 +75,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         MapleColor.white
                     ? Colors.black
                     : Colors.white,
-              ))
+              )),
+          SizedBox(
+            width: 10.w,
+          )
         ],
       ),
       bottomNavigationBar: CupertinoTabBar(

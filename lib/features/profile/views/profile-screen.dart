@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:maple/features/authentication/views/auth-screen.dart';
 import 'package:maple/features/profile/views/about-screen.dart';
@@ -129,7 +130,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   context: context,
                                   builder: (context) {
                                     return RatingDialog(
-                                      title: Text("How's Maple App?", style: TextStyle(color: Colors.black),),
+                                      title: Text(
+                                        "How's Maple App?",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                       submitButtonText: 'Rate',
                                       enableComment: true,
                                       force: false,
@@ -137,8 +141,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Navigator.pop(context);
                                       },
                                       showCloseButton: true,
-                                      message:
-                                          Text('Rate Maple App if you like it', style: TextStyle(color: Colors.black),),
+                                      message: Text(
+                                        'Rate Maple App if you like it',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                       onSubmitted: (response) {},
                                     );
                                   });
@@ -272,11 +278,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
     XFile? profilePicture = type == 'camera'
         ? await picker.pickImage(source: ImageSource.camera)
         : await picker.pickImage(source: ImageSource.gallery);
+
     if (profilePicture != null) {
       Navigator.pop(thisContext);
+
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: profilePicture.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9,
+          CropAspectRatioPreset.square
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarColor: MapleColor.indigo,
+            toolbarTitle: "Crop Image",
+            toolbarWidgetColor: Colors.white,
+          ),
+          IOSUiSettings(
+            title: 'Crop Image'
+          )
+        ]
+      );
+
       isLoading = true;
       setState(() {});
-      File pictureFile = File(profilePicture.path);
+      File pictureFile = File(croppedFile!.path);
 
       final imageRef =
           storage.ref().child('images/${userData['data']['user_id']}');

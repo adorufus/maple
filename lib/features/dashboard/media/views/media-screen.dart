@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/dashboard/media/views/media-details.dart';
 import 'package:provider/provider.dart';
@@ -259,7 +260,10 @@ class _MediaScreenState extends State<MediaScreen> {
                                                     ytUrl: data.docs[i]
                                                         ['vidID'],
                                                     mediaId: data.docs[i].id,
-                                                  )));
+                                                  ))).then((value) {
+                                        SystemChrome.setPreferredOrientations(
+                                            [DeviceOrientation.portraitUp]);
+                                      });
                                     },
                                     child: Column(
                                       crossAxisAlignment:
@@ -409,7 +413,9 @@ class _MediaScreenState extends State<MediaScreen> {
                                         '0xff' + data.docs[i]['color'])),
                                     ytUrl: data.docs[i]['vidID'],
                                     mediaId: data.docs[i].id,
-                                  ))),
+                                  ))).then((value){
+                        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+                      }),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,

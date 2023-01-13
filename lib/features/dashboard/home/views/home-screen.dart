@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:maple/features/dashboard/articles/view/article-screen.dart';
 import 'package:maple/features/dashboard/home/controllers/home-controllers.dart';
+import 'package:maple/features/dashboard/media/views/media-screen.dart';
 import 'package:maple/features/dashboard/providers/dashboard-providers.dart';
 import 'package:maple/services/database_service.dart';
 import 'package:maple/utils/colors.dart';
@@ -48,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w100,
                         color: MapleColor.white)),
                 TextSpan(
-                    text: "${context.watch<DashboardProviders>().username.toUpperCase()}",
+                    text:
+                        "${context.watch<DashboardProviders>().username.toUpperCase()}",
                     style: TextStyle(
                         fontFamily: 'Bebas',
                         fontSize: 24.sp,
@@ -205,7 +209,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {},
+                  onTap: () {
+                    context.read<DashboardProviders>().setNavIndex(2);
+                  },
                   child: Text(
                     'See all',
                     style: TextStyle(color: Colors.white),
@@ -259,7 +265,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(child: SizedBox()),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {},
+                  onTap: () {
+                    context.read<DashboardProviders>().setNavIndex(1);
+                  },
                   child: Text(
                     'See all',
                     style: TextStyle(color: Colors.white),
@@ -430,18 +438,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MediaDetails(
-                                        title: data.docs[i]['title'],
-                                        type: data.docs[i]['type'],
-                                        description: data.docs[i]
-                                            ['description'],
-                                        typeColor: Color(int.parse(
-                                            '0xff' + data.docs[i]['color'])),
-                                        ytUrl: data.docs[i]['vidID'],
-                                    mediaId: data.docs[i].id,
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MediaDetails(
+                                title: data.docs[i]['title'],
+                                type: data.docs[i]['type'],
+                                description: data.docs[i]['description'],
+                                typeColor: Color(
+                                    int.parse('0xff' + data.docs[i]['color'])),
+                                ytUrl: data.docs[i]['vidID'],
+                                mediaId: data.docs[i].id,
+                              ),
+                            ),
+                          ).then((value){
+                            SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+                          });
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

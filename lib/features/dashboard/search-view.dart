@@ -31,38 +31,47 @@ class _SearchViewState extends State<SearchView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                height: 49.h,
-                child: TextFormField(
-                  controller: searchController,
-                  style: TextStyle(color: Colors.black),
-                  onChanged: (data) {
-                    searchQuery = data;
-                    setState(() {});
-                  },
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          searchController.text = '';
-                          searchQuery = '';
-                          setState(() {
-
-                          });
+              Row(
+                children: [
+                  IconButton(onPressed: (){
+                    Navigator.pop(context);
+                  }, icon: Icon(Icons.arrow_back_ios_new)),
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                      height: 49.h,
+                      child: TextFormField(
+                        controller: searchController,
+                        style: TextStyle(color: Colors.black),
+                        onChanged: (data) {
+                          searchQuery = data;
+                          setState(() {});
                         },
-                          child: Icon(Icons.cancel)),
-                      fillColor: Color(0xffF5F5F5),
-                      filled: true,
-                      contentPadding: EdgeInsets.all(10.0.h),
-                      hintText: 'Search anything',
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(30.r)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(30.r))),
-                ),
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                searchController.text = '';
+                                searchQuery = '';
+                                setState(() {
+
+                                });
+                              },
+                                child: Icon(Icons.cancel)),
+                            fillColor: Color(0xffF5F5F5),
+                            filled: true,
+                            contentPadding: EdgeInsets.all(10.0.h),
+                            hintText: 'Search anything',
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(30.r)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(30.r))),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Flexible(
                 child: SingleChildScrollView(
