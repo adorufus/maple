@@ -70,7 +70,7 @@ class _MerchDetailsState extends State<MerchDetails> {
                 height: 17.h,
               ),
               Text(
-                'Lorem ipsum dolor sit amet, consectetur',
+                'Cool. You\'re so close to have these items!',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w100,

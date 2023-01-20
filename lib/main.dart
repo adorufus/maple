@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           title: 'Maple',
           theme: ThemeData(
             primarySwatch: Colors.blue,
-            textTheme: Typography.englishLike2021.apply(fontSizeFactor: 1.sp)
+            textTheme: Typography.englishLike2021.apply(fontSizeFactor: 1.sp, bodyColor: Colors.black, decorationColor: Colors.black)
           ),
           home: child,
         );

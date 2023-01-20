@@ -36,14 +36,14 @@ class _ArticleScreenState extends State<ArticleScreen> {
                 ),
                 children: [
                   TextSpan(
-                    text: "LOREM",
+                    text: "YOUR",
                     style: TextStyle(
                       fontFamily: 'Sequel',
                       fontSize: 40.sp,
                     ),
                   ),
                   TextSpan(
-                    text: " IPSUM",
+                    text: " DAILY",
                     style: TextStyle(
                       fontFamily: 'Bebas',
                       fontSize: 40.sp,
@@ -51,14 +51,14 @@ class _ArticleScreenState extends State<ArticleScreen> {
                     ),
                   ),
                   TextSpan(
-                    text: " IS",
+                    text: " INTAKE",
                     style: TextStyle(
                       fontFamily: 'Sequel',
                       fontSize: 40.sp,
                     ),
                   ),
                   TextSpan(
-                    text: " SIMPLY",
+                    text: " OF UPDATED",
                     style: TextStyle(
                       fontFamily: 'Bebas',
                       fontSize: 40.sp,
@@ -66,14 +66,14 @@ class _ArticleScreenState extends State<ArticleScreen> {
                     ),
                   ),
                   TextSpan(
-                    text: " DUMMY TO",
+                    text: " NEWS",
                     style: TextStyle(
                       fontFamily: 'Sequel',
                       fontSize: 40.sp,
                     ),
                   ),
                   TextSpan(
-                    text: "\n\nLOREM IPSUM IS AMET",
+                    text: "\n\nHERE ARE SOME FOR YOU",
                     style: TextStyle(
                       fontFamily: 'Bebas',
                       fontSize: 18.sp,

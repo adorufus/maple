@@ -58,9 +58,7 @@ class _IntroductionScreenState extends State<IntroductionScreen>
                     height: 701.h,
                     width: 390.w,
                   ),
-                  SizedBox(
-                    height: 53.h,
-                  ),
+                  Expanded(child: SizedBox()),
                   currentIndex == 2
                       ? Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.w),

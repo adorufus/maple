@@ -29,6 +29,7 @@ dependencies:
   glutton:
   url_launcher: ^6.1.7
   image_cropper: ^3.0.1
+  pod_player: ^0.1.0
 
 dev_dependencies:
   flutter_test:

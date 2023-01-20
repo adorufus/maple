@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:maple/features/dashboard/media/views/fullscreen_player.dart';
 import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:maple/widgets/maple-scaffold.dart';
+import 'package:pod_player/pod_player.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -39,57 +41,83 @@ class MediaDetails extends StatefulWidget {
 class _MediaDetailsState extends State<MediaDetails> {
   YoutubePlayerController? playerController;
   String currentLoggedIn = '';
+  int currentTime = 0;
+  // bool isFullscreen = false;
+  late final PodPlayerController podPlayerController;
 
   @override
   void initState() {
-    playerController = YoutubePlayerController(
-        initialVideoId: widget.ytUrl,
-        flags:
-            YoutubePlayerFlags(autoPlay: true,  controlsVisibleAtStart: false));
+    // playerController = YoutubePlayerController(
+    //     initialVideoId: widget.ytUrl,
+    //     flags: YoutubePlayerFlags(
+    //       autoPlay: true,
+    //       controlsVisibleAtStart: false,
+    //     ));
+
+    podPlayerController = PodPlayerController(
+      playVideoFrom: PlayVideoFrom.youtube(
+        'https://youtu.be/${widget.ytUrl}',
+      ),
+      podPlayerConfig: const PodPlayerConfig(
+        autoPlay: true,
+        isLooping: false,
+        videoQualityPriority: [1080, 720, 360, 240, 144],
+      ),
+    )..initialise();
 
     LocalStorageService.load('user').then((value) {
       currentLoggedIn = value['data']['username'];
 
       setState(() {});
     });
+
+    playerController?.addListener(() {
+      currentTime = playerController?.value.position.inSeconds ?? 0;
+    });
+
+    print(currentTime);
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+    playerController?.removeListener(() {});
     playerController?.dispose();
+    podPlayerController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return MapleScaffold(
         isUsingAppbar: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Image.asset(
-            'assets/images/close-button.png',
-            height: 36.h,
-            width: 36.w,
-          ),
+        leading: Row(
+          children: [
+            SizedBox(width: 10.w,),
+            Flexible(child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Image.asset(
+                'assets/images/close-button.png',
+                height: 31.h,
+                width: 31.w,
+              ),
+            ),)
+          ],
         ),
         actions: [
           IconButton(
-            onPressed: () async {
-
-              await Clipboard.setData(ClipboardData(text: 'https://youtube.com/${widget.ytUrl}'));
-              Flushbar(
-                flushbarPosition: FlushbarPosition.TOP,
-                duration: Duration(
-                  seconds: 3
-                ),
-                message: "Link Copied!",
-              ).show(context);
-            },
-            icon: Icon(Icons.link)
-          ),
+              onPressed: () async {
+                await Clipboard.setData(
+                    ClipboardData(text: 'https://youtube.com/${widget.ytUrl}'));
+                Flushbar(
+                  flushbarPosition: FlushbarPosition.TOP,
+                  duration: Duration(seconds: 3),
+                  message: "Link Copied!",
+                ).show(context);
+              },
+              icon: Icon(Icons.link)),
           IconButton(
             onPressed: () async {
               await FlutterShare.share(
@@ -102,6 +130,9 @@ class _MediaDetailsState extends State<MediaDetails> {
               height: 36.h,
               width: 36.w,
             ),
+          ),
+          SizedBox(
+            width: 10.w,
           )
         ],
         appBarBackgroundColor: Colors.black,
@@ -113,35 +144,65 @@ class _MediaDetailsState extends State<MediaDetails> {
           width: ScreenUtil().screenWidth,
           child: ListView(
             children: [
-              YoutubePlayer(
-                controller: playerController!,
-                showVideoProgressIndicator: true,
-                progressColors: ProgressBarColors(
-                    playedColor: MapleColor.indigo,
-                    handleColor: MapleColor.indigo),
-                bottomActions: [
-                  const SizedBox(width: 14.0),
-                  CurrentPosition(),
-                  const SizedBox(width: 8.0),
-                  ProgressBar(
-                    isExpanded: true,
-                    colors: ProgressBarColors(
-                        playedColor: MapleColor.indigo,
-                        handleColor: MapleColor.indigo),
-                  ),
-                  RemainingDuration(),
-                  FullScreenButton(),
-                ],
+              PodVideoPlayer(
+                controller: podPlayerController,
+                matchVideoAspectRatioToFrame: true,
+                podProgressBarConfig: PodProgressBarConfig(
+                  playingBarColor: MapleColor.indigo,
+                  circleHandlerColor: MapleColor.indigo,
+                ),
+              ),
+              // YoutubePlayer(
+              //   controller: playerController!,
+              //   showVideoProgressIndicator: true,
+              //   progressColors: ProgressBarColors(
+              //       playedColor: MapleColor.indigo,
+              //       handleColor: MapleColor.indigo),
+              //   bottomActions: [
+              //     const SizedBox(width: 14.0),
+              //     CurrentPosition(),
+              //     const SizedBox(width: 8.0),
+              //     ProgressBar(
+              //       isExpanded: true,
+              //       colors: ProgressBarColors(
+              //           playedColor: MapleColor.indigo,
+              //           handleColor: MapleColor.indigo),
+              //     ),
+              //     RemainingDuration(),
+              //     IconButton(
+              //       onPressed: () => setState(() {
+              //         if (isFullscreen) {
+              //           isFullscreen = false;
+              //           SystemChrome.setPreferredOrientations([
+              //             DeviceOrientation.portraitUp,
+              //           ]);
+              //         } else {
+              //           isFullscreen = true;
+              //           SystemChrome.setPreferredOrientations([
+              //             DeviceOrientation.landscapeLeft,
+              //             DeviceOrientation.landscapeRight,
+              //           ]);
+              //         }
+              //       }),
+              //       icon: Icon(
+              //         Icons.fullscreen,
+              //         color: Colors.white,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              SizedBox(
+                height: 10.h,
               ),
               Container(
-                color: widget.typeColor,
+                color: Colors.black,
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: Column(
                   children: [
                     Text(
                       widget.title,
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontFamily: 'Sequel',
                           fontSize: 20.sp),
                     ),
@@ -151,7 +212,7 @@ class _MediaDetailsState extends State<MediaDetails> {
                     Text(
                       widget.description,
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontFamily: 'Sequel',
                           fontWeight: FontWeight.w100,
                           fontSize: 14.sp),
@@ -220,12 +281,12 @@ class _MediaDetailsState extends State<MediaDetails> {
                                         Icons.favorite_outlined,
                                         color: !data!
                                                 .containsKey('people_who_likes')
-                                            ? Colors.black
+                                            ? Colors.white
                                             : !(data['people_who_likes']
                                                         as List)
                                                     .contains(currentLoggedIn)
-                                                ? Colors.black
-                                                : MapleColor.indigo,
+                                                ? Colors.white
+                                                : MapleColor.red,
                                         size: 32.w,
                                       ),
                                     ),
@@ -243,9 +304,9 @@ class _MediaDetailsState extends State<MediaDetails> {
                                 );
                               } else {
                                 return Icon(
-                                    Icons.favorite_outlined,
-                                    color: MapleColor.black,
-                                    size: 32.w,
+                                  Icons.favorite_outlined,
+                                  color: MapleColor.black,
+                                  size: 32.w,
                                 );
                               }
                             }
@@ -263,7 +324,7 @@ class _MediaDetailsState extends State<MediaDetails> {
                   'Related video',
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 24.sp,
+                      fontSize: 21.sp,
                       fontFamily: 'Sequel'),
                 ),
               ),
@@ -342,7 +403,7 @@ class _MediaDetailsState extends State<MediaDetails> {
                                     Container(
                                       height: 106.h,
                                       width: ScreenUtil().screenWidth,
-                                      color: widget.typeColor,
+                                      color: Colors.black,
                                       padding: EdgeInsets.all(20.w),
                                       child: Column(
                                         crossAxisAlignment:
@@ -354,36 +415,18 @@ class _MediaDetailsState extends State<MediaDetails> {
                                             style: TextStyle(
                                                 fontFamily: 'Sequel',
                                                 fontSize: 14.sp,
-                                                color: context
-                                                            .watch<
-                                                                DashboardProviders>()
-                                                            .selectedType ==
-                                                        'Unscene'
-                                                    ? Colors.white
-                                                    : Colors.black),
+                                                color: Colors.white),
                                           ),
-                                          Expanded(child: SizedBox()),
+                                          SizedBox(height: 10.h,),
                                           RichText(
                                             text: TextSpan(
                                               style: TextStyle(
-                                                  color: context
-                                                              .watch<
-                                                                  DashboardProviders>()
-                                                              .selectedType ==
-                                                          'Unscene'
-                                                      ? Colors.white
-                                                      : Colors.black),
+                                                  color: Colors.white),
                                               children: [
                                                 TextSpan(
-                                                    text: splittedType[0],
+                                                    text: splittedType[0] + splittedType[1],
                                                     style: TextStyle(
                                                         fontFamily: 'Sequel')),
-                                                TextSpan(
-                                                    text: splittedType[1],
-                                                    style: TextStyle(
-                                                        fontFamily: 'Bebas',
-                                                        fontWeight:
-                                                            FontWeight.bold))
                                               ],
                                             ),
                                           )

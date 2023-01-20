@@ -49,14 +49,14 @@ class _MediaScreenState extends State<MediaScreen> {
                     ),
                     children: [
                       TextSpan(
-                        text: "LOREM",
+                        text: "HELLO, ",
                         style: TextStyle(
                           fontFamily: 'Sequel',
                           fontSize: 40.sp,
                         ),
                       ),
                       TextSpan(
-                        text: " IPSUM",
+                        text: " YOU'RE LANDED",
                         style: TextStyle(
                           fontFamily: 'Bebas',
                           fontSize: 40.sp,
@@ -64,14 +64,14 @@ class _MediaScreenState extends State<MediaScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: " IS",
+                        text: " ON",
                         style: TextStyle(
                           fontFamily: 'Sequel',
                           fontSize: 40.sp,
                         ),
                       ),
                       TextSpan(
-                        text: " SIMPLY",
+                        text: " THE MAPLE MEDIA",
                         style: TextStyle(
                           fontFamily: 'Bebas',
                           fontSize: 40.sp,
@@ -79,14 +79,14 @@ class _MediaScreenState extends State<MediaScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: " DUMMY TO",
+                        text: " PAGE",
                         style: TextStyle(
                           fontFamily: 'Sequel',
                           fontSize: 40.sp,
                         ),
                       ),
                       TextSpan(
-                        text: "\n\nLOREM IPSUM IS AMET",
+                        text: "\n\nWATCH OUR CREATIONS HERE!",
                         style: TextStyle(
                           fontFamily: 'Bebas',
                           fontSize: 18.sp,
@@ -111,7 +111,7 @@ class _MediaScreenState extends State<MediaScreen> {
                           fontFamily: 'Sequel',
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
-                          fontSize: 24.sp),
+                          fontSize: 21.sp),
                     ),
                   ],
                 ),
@@ -128,7 +128,7 @@ class _MediaScreenState extends State<MediaScreen> {
                     width: ScreenUtil().screenWidth * 1.5,
                     child: FutureBuilder<QuerySnapshot>(
                       future: FirebaseDatabase.get(reference: 'media-type')
-                          .orderBy('created_time', descending: false)
+                          .orderBy('created_time', descending: true)
                           .get(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -167,7 +167,6 @@ class _MediaScreenState extends State<MediaScreen> {
                                     ],
                                     data[index]['name'],
                                     index,
-                                    data[index]['width'].toDouble(),
                                     Color(int.parse(
                                         '0xff' + data[index]['color'])));
                               }),
@@ -195,18 +194,21 @@ class _MediaScreenState extends State<MediaScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      context.watch<DashboardProviders>().selectedType != ''
+                      context.watch<DashboardProviders>().selectedType != '' && context.watch<DashboardProviders>().selectedType != 'all'
                           ? '${context.watch<DashboardProviders>().selectedType} for you'
                           : 'All videos',
                       style: TextStyle(
                         fontFamily: 'Sequel',
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 24.sp,
+                        fontSize: 21.sp,
                       ),
                     ),
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 15.h,
               ),
               (context.watch<DashboardProviders>().selectedType != ''
                   ? FutureBuilder<QuerySnapshot>(
@@ -363,7 +365,7 @@ class _MediaScreenState extends State<MediaScreen> {
                       })
                   : Container()),
             ] +
-            (context.watch<DashboardProviders>().selectedType != ''
+            (context.watch<DashboardProviders>().selectedType != '' && context.watch<DashboardProviders>().selectedType != 'all'
                 ? [Container()]
                 : allVideos()),
       ),
@@ -385,7 +387,10 @@ class _MediaScreenState extends State<MediaScreen> {
   Widget mediaList(String type, String text1, String text2, Color color) {
     return FutureBuilder<QuerySnapshot>(
         future: FirebaseDatabase.get(reference: 'media')
-            .where('type', isEqualTo: type)
+            .where(
+              'type',
+              isEqualTo: type,
+            )
             .limit(3)
             .get(),
         builder: (context, snapshot) {
@@ -413,8 +418,10 @@ class _MediaScreenState extends State<MediaScreen> {
                                         '0xff' + data.docs[i]['color'])),
                                     ytUrl: data.docs[i]['vidID'],
                                     mediaId: data.docs[i].id,
-                                  ))).then((value){
-                        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+                                  ))).then((value) {
+                        SystemChrome.setPreferredOrientations(
+                          [DeviceOrientation.portraitUp],
+                        );
                       }),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -496,43 +503,45 @@ class _MediaScreenState extends State<MediaScreen> {
         });
   }
 
-  Widget categoryButton(List<String> name, String unformattedName, int index,
-      double width, Color color) {
+  Widget categoryButton(
+      List<String> name, String unformattedName, int index, Color color) {
     return GestureDetector(
       onTap: () {
-        if (color == MapleColor.white) {
-          context.read<DashboardProviders>().setColor(MapleColor.black);
-        } else {
-          context.read<DashboardProviders>().setColor(color);
-        }
+        if (unformattedName.toLowerCase() != 'all') {
+          if (color == MapleColor.white) {
+            context.read<DashboardProviders>().setColor(MapleColor.black);
+          } else {
+            context.read<DashboardProviders>().setColor(color);
+          }
 
-        context.read<DashboardProviders>().setType(unformattedName);
+          context.read<DashboardProviders>().setType(unformattedName);
+        } else {
+          context.read<DashboardProviders>().setColor(MapleColor.indigo);
+          context.read<DashboardProviders>().setType('all');
+          context.read<DashboardProviders>().setNavIndex(2);
+        }
       },
       child: Container(
-        height: 57.h,
-        width: width.toDouble(),
-        padding: EdgeInsets.symmetric(vertical: 14.h),
+        height: 40.h,
+        width: 119.w,
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(5.39.r)),
+            color: context.watch<DashboardProviders>().selectedType ==
+                    unformattedName
+                ? Colors.grey
+                : color,
+            borderRadius: BorderRadius.circular(5.39.r)),
         child: Center(
           child: RichText(
             text: TextSpan(
               style: TextStyle(color: Colors.black),
               children: [
                 TextSpan(
-                  text: name[0],
+                  text: name[0] + name[1],
                   style: TextStyle(
                     fontFamily: 'Sequel',
-                    fontSize: 24.24.sp,
+                    fontSize: 14.sp,
                   ),
                 ),
-                TextSpan(
-                  text: name[1],
-                  style: TextStyle(
-                      fontFamily: 'Bebas',
-                      fontSize: 24.24.sp,
-                      fontWeight: FontWeight.bold),
-                )
               ],
             ),
           ),

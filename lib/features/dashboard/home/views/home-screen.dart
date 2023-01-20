@@ -41,70 +41,78 @@ class _HomeScreenState extends State<HomeScreen> {
             width: ScreenUtil().screenWidth,
             color: MapleColor.indigo,
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-            child: RichText(
-              text: TextSpan(children: [
-                TextSpan(
-                    text: "GOOD MORNING, ",
-                    style: TextStyle(
-                        fontFamily: 'Bebas',
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w100,
-                        color: MapleColor.white)),
-                TextSpan(
-                    text:
-                        "${context.watch<DashboardProviders>().username.toUpperCase()}",
-                    style: TextStyle(
-                        fontFamily: 'Bebas',
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w700,
-                        color: MapleColor.white)),
-                TextSpan(
-                    text: "\nSORRY",
-                    style: TextStyle(
-                        fontFamily: 'Bebas',
-                        fontSize: 50.sp,
-                        fontWeight: FontWeight.w700,
-                        color: MapleColor.green)),
-                TextSpan(
-                    text: " WE",
-                    style: TextStyle(
-                        fontFamily: 'Sequel',
-                        fontSize: 50.sp,
-                        color: Colors.white)),
-                TextSpan(
-                    text: " DON'T",
-                    style: TextStyle(
-                        fontFamily: 'Bebas',
-                        fontSize: 50.sp,
-                        fontWeight: FontWeight.w700,
-                        color: MapleColor.green)),
-                TextSpan(
-                    text: " PROVIDE",
-                    style: TextStyle(
-                        fontFamily: 'Bebas',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 50.sp,
-                        color: MapleColor.green)),
-                TextSpan(
-                    text: " THE",
-                    style: TextStyle(
-                        fontFamily: 'Sequel',
-                        fontSize: 50.sp,
-                        color: Colors.white)),
-                TextSpan(
-                    text: " SWEET",
-                    style: TextStyle(
-                        fontFamily: 'Bebas',
-                        fontSize: 50.sp,
-                        fontWeight: FontWeight.w700,
-                        color: MapleColor.green)),
-                TextSpan(
-                    text: " SYRUP",
-                    style: TextStyle(
-                        fontFamily: 'Sequel',
-                        fontSize: 50.sp,
-                        color: Colors.white)),
-              ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                      text: "GOOD MORNING, ",
+                      style: TextStyle(
+                          fontFamily: 'Bebas',
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w100,
+                          color: MapleColor.white)),
+                  TextSpan(
+                      text:
+                          "${context.watch<DashboardProviders>().username.toUpperCase()}",
+                      style: TextStyle(
+                          fontFamily: 'Bebas',
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w700,
+                          color: MapleColor.white)),
+                ])),
+                RichText(
+                  text: TextSpan(style: TextStyle(height: .9), children: [
+                    TextSpan(
+                        text: "\nSORRY",
+                        style: TextStyle(
+                            fontFamily: 'Bebas',
+                            fontSize: 50.sp,
+                            fontWeight: FontWeight.w700,
+                            color: MapleColor.green)),
+                    TextSpan(
+                        text: " WE",
+                        style: TextStyle(
+                            fontFamily: 'Sequel',
+                            fontSize: 50.sp,
+                            color: Colors.white)),
+                    TextSpan(
+                        text: " DON'T",
+                        style: TextStyle(
+                            fontFamily: 'Bebas',
+                            fontSize: 50.sp,
+                            fontWeight: FontWeight.w700,
+                            color: MapleColor.green)),
+                    TextSpan(
+                        text: " PROVIDE",
+                        style: TextStyle(
+                            fontFamily: 'Bebas',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 50.sp,
+                            color: MapleColor.green)),
+                    TextSpan(
+                        text: " THE",
+                        style: TextStyle(
+                            fontFamily: 'Sequel',
+                            fontSize: 50.sp,
+                            color: Colors.white)),
+                    TextSpan(
+                        text: " SWEET",
+                        style: TextStyle(
+                            fontFamily: 'Bebas',
+                            fontSize: 50.sp,
+                            fontWeight: FontWeight.w700,
+                            color: MapleColor.green)),
+                    TextSpan(
+                        text: " SYRUP",
+                        style: TextStyle(
+                            fontFamily: 'Sequel',
+                            fontSize: 50.sp,
+                            color: Colors.white)),
+                  ]),
+                ),
+              ],
             ),
           ),
           SizedBox(
@@ -121,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontFamily: 'Sequel',
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
-                      fontSize: 24.sp),
+                      fontSize: 21.sp),
                 ),
               ],
             ),
@@ -138,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: ScreenUtil().screenWidth * 1.5,
                 child: FutureBuilder<QuerySnapshot>(
                   future: FirebaseDatabase.get(reference: 'media-type')
-                      .orderBy('created_time', descending: false)
+                      .orderBy('created_time', descending: true)
                       .get(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -171,7 +179,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                                 data[index]['name'],
                                 index,
-                                data[index]['width'].toDouble(),
                                 Color(
                                     int.parse('0xff' + data[index]['color'])));
                           }),
@@ -204,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontFamily: 'Sequel',
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
-                    fontSize: 24.sp,
+                    fontSize: 21.sp,
                   ),
                 ),
                 GestureDetector(
@@ -214,35 +221,38 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Text(
                     'See all',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.grey),
                   ),
                 )
               ],
             ),
           ),
-          latestMedia('Can!'),
           SizedBox(
             height: 20.h,
+          ),
+          latestMedia('Can!'),
+          SizedBox(
+            height: 25.h,
           ),
           latestMedia('Trick Room'),
           SizedBox(
-            height: 20.h,
+            height: 25.h,
           ),
           latestMedia('Rewind'),
           SizedBox(
-            height: 20.h,
+            height: 25.h,
           ),
           latestMedia('Wander'),
           SizedBox(
-            height: 20.h,
+            height: 25.h,
           ),
           latestMedia('Dixi'),
           SizedBox(
-            height: 20.h,
+            height: 25.h,
           ),
           latestMedia('Play Room'),
           SizedBox(
-            height: 20.h,
+            height: 25.h,
           ),
           latestMedia('Unscene'),
           SizedBox(
@@ -259,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontFamily: 'Sequel',
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
-                    fontSize: 24.sp,
+                    fontSize: 21.sp,
                   ),
                 ),
                 Expanded(child: SizedBox()),
@@ -270,11 +280,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Text(
                     'See all',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.grey),
                   ),
                 )
               ],
             ),
+          ),
+          SizedBox(
+            height: 20.h,
           ),
           latestArticle()
         ],
@@ -450,8 +463,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mediaId: data.docs[i].id,
                               ),
                             ),
-                          ).then((value){
-                            SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+                          ).then((value) {
+                            SystemChrome.setPreferredOrientations(
+                                [DeviceOrientation.portraitUp]);
                           });
                         },
                         child: Column(
@@ -485,11 +499,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             SizedBox(
+                              height: 10.h,
+                            ),
+                            SizedBox(
                               width: (data.docs[i]['thumbnails']['medium']
                                       ['width'] as int)
                                   .w,
                               child: Text(
                                 data.docs[i]['title'],
+                                style: TextStyle(color: Colors.white),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             )
@@ -513,23 +531,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget categoryButton(List<String> name, String unformattedName, int index,
-      double width, Color color) {
+  Widget categoryButton(
+      List<String> name, String unformattedName, int index, Color color) {
     return GestureDetector(
       onTap: () {
-        if (color == MapleColor.white) {
-          context.read<DashboardProviders>().setColor(MapleColor.black);
-        } else {
-          context.read<DashboardProviders>().setColor(color);
-        }
+        if (unformattedName.toLowerCase() != 'all') {
+          if (color == MapleColor.white) {
+            context.read<DashboardProviders>().setColor(MapleColor.black);
+          } else {
+            context.read<DashboardProviders>().setColor(color);
+          }
 
-        context.read<DashboardProviders>().setType(unformattedName);
-        context.read<DashboardProviders>().setNavIndex(2);
+          context.read<DashboardProviders>().setType(unformattedName);
+          context.read<DashboardProviders>().setNavIndex(2);
+        } else {
+          context.read<DashboardProviders>().setNavIndex(2);
+        }
       },
       child: Container(
-        height: 57.h,
-        width: width.toDouble(),
-        padding: EdgeInsets.symmetric(vertical: 14.h),
+        height: 40.h,
+        width: 119.w,
         decoration: BoxDecoration(
             color: color, borderRadius: BorderRadius.circular(5.39.r)),
         child: Center(
@@ -538,19 +559,12 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(color: Colors.black),
               children: [
                 TextSpan(
-                  text: name[0],
+                  text: name[0] + name[1],
                   style: TextStyle(
                     fontFamily: 'Sequel',
-                    fontSize: 24.24.sp,
+                    fontSize: 14.sp,
                   ),
                 ),
-                TextSpan(
-                  text: name[1],
-                  style: TextStyle(
-                      fontFamily: 'Bebas',
-                      fontSize: 24.24.sp,
-                      fontWeight: FontWeight.bold),
-                )
               ],
             ),
           ),
