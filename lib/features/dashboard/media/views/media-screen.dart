@@ -196,7 +196,11 @@ class _MediaScreenState extends State<MediaScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      context.watch<DashboardProviders>().selectedType != '' && context.watch<DashboardProviders>().selectedType != 'all'
+                      context.watch<DashboardProviders>().selectedType != '' &&
+                              context
+                                      .watch<DashboardProviders>()
+                                      .selectedType !=
+                                  'all'
                           ? '${context.watch<DashboardProviders>().selectedType} for you'
                           : 'All videos',
                       style: TextStyle(
@@ -297,9 +301,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                         Container(
                                           height: 106.h,
                                           width: ScreenUtil().screenWidth,
-                                          color: context
-                                              .watch<DashboardProviders>()
-                                              .appBarColor,
+                                          color: Colors.black,
                                           padding: EdgeInsets.all(20.w),
                                           child: Column(
                                             crossAxisAlignment:
@@ -311,38 +313,18 @@ class _MediaScreenState extends State<MediaScreen> {
                                                 style: TextStyle(
                                                     fontFamily: 'Sequel',
                                                     fontSize: 14.sp,
-                                                    color: context
-                                                                .watch<
-                                                                    DashboardProviders>()
-                                                                .selectedType ==
-                                                            'Unscene'
-                                                        ? Colors.white
-                                                        : Colors.black),
+                                                    color: Colors.white),
                                               ),
                                               Expanded(child: SizedBox()),
                                               RichText(
                                                 text: TextSpan(
                                                   style: TextStyle(
-                                                      color: context
-                                                                  .watch<
-                                                                      DashboardProviders>()
-                                                                  .selectedType ==
-                                                              'Unscene'
-                                                          ? Colors.white
-                                                          : Colors.black),
+                                                      color: Colors.white),
                                                   children: [
                                                     TextSpan(
-                                                        text: splittedType[0],
+                                                        text: splittedType[0] + splittedType[1],
                                                         style: TextStyle(
-                                                            fontFamily:
-                                                                'Sequel')),
-                                                    TextSpan(
-                                                        text: splittedType[1],
-                                                        style: TextStyle(
-                                                            fontFamily: 'Bebas',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold))
+                                                            fontFamily: 'Sequel')),
                                                   ],
                                                 ),
                                               )
@@ -367,7 +349,8 @@ class _MediaScreenState extends State<MediaScreen> {
                       })
                   : Container()),
             ] +
-            (context.watch<DashboardProviders>().selectedType != '' && context.watch<DashboardProviders>().selectedType != 'all'
+            (context.watch<DashboardProviders>().selectedType != '' &&
+                    context.watch<DashboardProviders>().selectedType != 'all'
                 ? [Container()]
                 : allVideos()),
       ),
@@ -450,7 +433,7 @@ class _MediaScreenState extends State<MediaScreen> {
                           Container(
                             height: 106.h,
                             width: ScreenUtil().screenWidth,
-                            color: color,
+                            color: Colors.black,
                             padding: EdgeInsets.all(20.w),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -461,27 +444,18 @@ class _MediaScreenState extends State<MediaScreen> {
                                   style: TextStyle(
                                       fontFamily: 'Sequel',
                                       fontSize: 14.sp,
-                                      color: type == 'Unscene'
-                                          ? Colors.white
-                                          : Colors.black),
+                                      color: Colors.white),
                                 ),
                                 Expanded(child: SizedBox()),
                                 RichText(
                                   text: TextSpan(
                                     style: TextStyle(
-                                        color: type == 'Unscene'
-                                            ? Colors.white
-                                            : Colors.black),
+                                        color: Colors.white),
                                     children: [
                                       TextSpan(
-                                          text: text1,
-                                          style:
-                                              TextStyle(fontFamily: 'Sequel')),
-                                      TextSpan(
-                                          text: text2,
+                                          text: text1 + text2,
                                           style: TextStyle(
-                                              fontFamily: 'Bebas',
-                                              fontWeight: FontWeight.bold))
+                                              fontFamily: 'Sequel')),
                                     ],
                                   ),
                                 )

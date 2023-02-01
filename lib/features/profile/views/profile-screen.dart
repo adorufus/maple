@@ -254,6 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               userData['data']['full_name'] ?? '',
                               style: TextStyle(
                                   fontFamily: 'Sequel',
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 35.sp),
                             ),
@@ -265,6 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   '',
                               style: TextStyle(
                                   fontFamily: 'Sequel',
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w100,
                                   fontSize: 14.sp),
                             )
