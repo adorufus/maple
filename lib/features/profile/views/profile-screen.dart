@@ -17,6 +17,7 @@ import 'package:maple/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
+import '../../../services/analytics_service.dart';
 import '../../dashboard/providers/dashboard-providers.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -41,6 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     getUserData();
 
     super.initState();
+
+    analytics.setCurrentScreen(screenName: "/dashboard/profile");
   }
 
   void getUserData() {

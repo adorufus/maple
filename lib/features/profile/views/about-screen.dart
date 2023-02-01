@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/utils/colors.dart';
 
+import '../../../services/analytics_service.dart';
+
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
 
@@ -10,6 +12,13 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    analytics.setCurrentScreen(screenName: "/dashboard/profile/about-maple");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

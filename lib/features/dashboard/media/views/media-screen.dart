@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/dashboard/media/views/media-details.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../services/analytics_service.dart';
 import '../../../../services/database_service.dart';
 import '../../../../utils/colors.dart';
 import '../../providers/dashboard-providers.dart';
@@ -21,6 +22,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
   @override
   void initState() {
+    analytics.setCurrentScreen(screenName: "/dashboard/media");
     super.initState();
   }
 

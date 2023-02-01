@@ -5,6 +5,8 @@ import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/utils/widgets.dart';
 import 'package:maple/widgets/maple-scaffold.dart';
 
+import '../../../services/analytics_service.dart';
+
 class IntroductionScreen extends StatefulWidget {
   const IntroductionScreen({super.key});
 
@@ -36,6 +38,12 @@ class _IntroductionScreenState extends State<IntroductionScreen>
     "assets/images/maple-slide-2.png",
     "assets/images/maple-slide-3.png",
   ];
+
+  @override
+  void initState() {
+    analytics.setCurrentScreen(screenName: "/introduction");
+    super.initState();
+  }
 
   @override
   void dispose() {

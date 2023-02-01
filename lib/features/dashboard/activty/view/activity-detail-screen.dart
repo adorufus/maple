@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../services/analytics_service.dart';
+
 class ActivityDetailScreen extends StatefulWidget {
   final data;
   const ActivityDetailScreen({Key? key, this.data}) : super(key: key);
@@ -13,6 +15,13 @@ class ActivityDetailScreen extends StatefulWidget {
 }
 
 class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
+
+  @override
+  void initState() {
+    analytics.setCurrentScreen(screenName: "/dashboard/activity/activity-detail");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

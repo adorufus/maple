@@ -11,6 +11,7 @@ import 'package:maple/services/database_service.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../services/analytics_service.dart';
 import '../../articles/view/article-detail-screen.dart';
 import '../../media/views/media-details.dart';
 
@@ -26,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    print('bangat');
+    analytics.setCurrentScreen(screenName: "/dashboard/home");
     super.initState();
   }
 
@@ -322,7 +323,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: Container(
                         height: 195.h,
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Row(
                           children: [
                             i.isOdd

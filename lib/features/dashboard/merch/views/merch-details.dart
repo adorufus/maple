@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../services/analytics_service.dart';
+
 class MerchDetails extends StatefulWidget {
   final String imageUrl;
   final String url;
@@ -13,6 +15,13 @@ class MerchDetails extends StatefulWidget {
 }
 
 class _MerchDetailsState extends State<MerchDetails> {
+
+  @override
+  void initState() {
+    analytics.setCurrentScreen(screenName: "/dashboard/merch/merch-details");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

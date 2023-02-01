@@ -9,12 +9,14 @@ class DashboardProviders with ChangeNotifier {
   String _selectedType = '';
   String _username = '';
   String _fullName = '';
+  String _mapleIcon = 'assets/images/logo-maple-kecil.png';
 
   Color get appBarColor => _appBarColor;
   int get navIndex => _navIndex;
   String get selectedType => _selectedType;
   String get username => _username;
   String get fullName => _fullName;
+  String get mapleIcon => _mapleIcon;
 
   void setColor(Color color) {
     _appBarColor = color;
@@ -38,6 +40,11 @@ class DashboardProviders with ChangeNotifier {
 
   void setFullName(String thisFullname) {
     _fullName = thisFullname;
+    notifyListeners();
+  }
+
+  void setMapleIcon(String path) {
+    _mapleIcon = path;
     notifyListeners();
   }
 }

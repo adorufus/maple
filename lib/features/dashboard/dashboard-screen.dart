@@ -32,6 +32,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    // context.read<DashboardProviders>().setColor(MapleColor.indigo);
+    // context.read<DashboardProviders>().setMapleIcon('assets/images/logo-maple-kecil.png');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         elevation: 0,
         leading: Padding(
           padding: EdgeInsets.only(left: 20.w),
-          child: Image.asset('assets/images/logo-maple-kecil.png'),
+          child: Image.asset(context.watch<DashboardProviders>().mapleIcon),
         ),
         leadingWidth: 108.81.w,
         automaticallyImplyLeading: false,
@@ -149,9 +161,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         inactiveColor: MapleColor.white,
         onTap: (index) {
           context.read<DashboardProviders>().setColor(MapleColor.indigo);
+          context.read<DashboardProviders>().setMapleIcon('assets/images/logo-maple-kecil.png');
           if (index == 1) {
             context.read<DashboardProviders>().setColor(MapleColor.white);
-          } else if (index == 3) {
+          } else if (index == 3 || index == 4) {
+            context.read<DashboardProviders>().setMapleIcon('assets/images/logo-maple-nigga.png');
             context.read<DashboardProviders>().setColor(Colors.black);
           }
 

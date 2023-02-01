@@ -6,6 +6,7 @@ import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/utils/colors.dart';
 import 'package:provider/provider.dart';
 
+import '../../../services/analytics_service.dart';
 import '../../dashboard/providers/dashboard-providers.dart';
 
 class EditProfile extends StatefulWidget {
@@ -27,6 +28,8 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
 
     super.initState();
+
+    analytics.setCurrentScreen(screenName: "/dashboard/profile/edit-profile");
   }
 
   @override

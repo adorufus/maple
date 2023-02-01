@@ -13,6 +13,7 @@ import 'package:pod_player/pod_player.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../../../../services/analytics_service.dart';
 import '../../../../services/database_service.dart';
 import '../../providers/dashboard-providers.dart';
 
@@ -47,6 +48,7 @@ class _MediaDetailsState extends State<MediaDetails> {
 
   @override
   void initState() {
+    analytics.setCurrentScreen(screenName: "/dashboard/media/media-details");
     // playerController = YoutubePlayerController(
     //     initialVideoId: widget.ytUrl,
     //     flags: YoutubePlayerFlags(

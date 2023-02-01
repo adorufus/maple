@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/services/database_service.dart';
 
+import '../../services/analytics_service.dart';
 import '../../utils/colors.dart';
 import 'articles/view/article-detail-screen.dart';
 import 'media/views/media-details.dart';
@@ -19,6 +20,12 @@ class _SearchViewState extends State<SearchView> {
   List<DocumentSnapshot> documents = [];
 
   String searchQuery = '';
+
+  @override
+  void initState() {
+    analytics.setCurrentScreen(screenName: "/dashboard/search-view");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

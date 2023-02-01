@@ -59,11 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBK6_eEssBucQwy0N0McCLEyJNkBKMRWqE',
-    appId: '1:60519998695:ios:5917fcc980523f3c592e42',
+    appId: '1:60519998695:ios:20074378c5b23f9e592e42',
     messagingSenderId: '60519998695',
     projectId: 'mapleapp-7c7ab',
     storageBucket: 'mapleapp-7c7ab.appspot.com',
-    iosClientId: '60519998695-tutfpun76l4kpaa5tbaqn4ld98i4gmcd.apps.googleusercontent.com',
-    iosBundleId: 'media.themaple.app.maple',
+    androidClientId: '60519998695-m09iglrb2eu6btke61fd634al9phapbo.apps.googleusercontent.com',
+    iosClientId: '60519998695-0ejref28n87muapcnmmpdn2jnklacvcq.apps.googleusercontent.com',
+    iosBundleId: 'media.themaple.test',
   );
 }

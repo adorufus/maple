@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/dashboard/merch/views/merch-details.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../services/analytics_service.dart';
 import '../../../../utils/colors.dart';
 import '../../providers/dashboard-providers.dart';
 
@@ -14,6 +15,14 @@ class MerchScreen extends StatefulWidget {
 }
 
 class _MerchScreenState extends State<MerchScreen> {
+
+  @override
+  void initState() {
+    analytics.setCurrentScreen(screenName: "/dashboard/merch");
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(

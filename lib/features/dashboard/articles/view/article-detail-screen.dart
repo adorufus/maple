@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../services/analytics_service.dart';
+
 class ArticleDetailScreen extends StatefulWidget {
   final data;
+
   const ArticleDetailScreen({Key? key, this.data}) : super(key: key);
 
   @override
@@ -11,6 +14,12 @@ class ArticleDetailScreen extends StatefulWidget {
 }
 
 class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
+  @override
+  void initState() {
+    analytics.setCurrentScreen(screenName: "/dashboard/article-screen/article-detail");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,11 +60,10 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
             height: 20.h,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Html(
-              data: widget.data['content'],
-            )
-          )
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Html(
+                data: widget.data['content'],
+              ))
         ],
       ),
     );

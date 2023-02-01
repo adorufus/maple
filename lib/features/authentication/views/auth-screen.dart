@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/authentication/controllers/auth-controllers.dart';
 import 'package:maple/features/dashboard/dashboard-screen.dart';
+import 'package:maple/services/analytics_service.dart';
 import 'package:maple/services/local_storage_service.dart';
 import 'package:maple/widgets/maple-scaffold.dart';
 import 'package:maple/utils/widgets.dart';
@@ -14,6 +15,13 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    analytics.setCurrentScreen(screenName: "/auth");
+  }
+
   @override
   Widget build(BuildContext context) {
     return MapleScaffold(
@@ -90,6 +98,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     LocalStorageService.load('user').then((value) {
                       print(value);
                       if (value["status"] == 'success') {
+                        analytics.logLogin();
+                        analytics.setUserProperty(name: 'type', value: 'guest');
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -116,10 +126,15 @@ class _AuthScreenState extends State<AuthScreen> {
             LocalStorageService.load('user').then((value) {
               print(value);
               if (value["status"] == 'success') {
+                analytics.logLogin();
+                analytics.setUserProperty(name: 'using', value: 'google_auth');
+                analytics.setUserProperty(name: 'type', value: 'user');
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DashboardScreen()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DashboardScreen(),
+                  ),
+                );
               }
             });
           });
@@ -135,7 +150,11 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
       customButton(
         'Sign in with Apple',
-        () {},
+        () {
+          analytics.logLogin();
+          analytics.setUserProperty(name: 'using', value: 'apple_auth');
+          analytics.setUserProperty(name: 'type', value: 'user');
+        },
         icon: Image.asset(
           'assets/images/apple.png',
           height: 32.h,

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "60519998695-m09iglrb2eu6btke61fd634al9phapbo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "media.themaple.app.maple",
+            "certificate_hash": "a567df513786df5efe206b0d8b82365d08222757"
+          }
+        },
+        {
           "client_id": "60519998695-4ek1e26b4j6u818l9c0ieo7iht3uuuoc.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "60519998695-4ek1e26b4j6u818l9c0ieo7iht3uuuoc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "60519998695-0ejref28n87muapcnmmpdn2jnklacvcq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "media.themaple.test"
+              }
             }
           ]
         }

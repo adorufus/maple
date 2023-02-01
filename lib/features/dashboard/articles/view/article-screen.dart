@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../services/analytics_service.dart';
 import '../../../../services/database_service.dart';
 import '../../../../utils/colors.dart';
 import '../../providers/dashboard-providers.dart';
@@ -16,6 +17,13 @@ class ArticleScreen extends StatefulWidget {
 }
 
 class _ArticleScreenState extends State<ArticleScreen> {
+
+  @override
+  void initState() {
+    analytics.setCurrentScreen(screenName: "/dashboard/article-screen");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
