@@ -65,10 +65,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: const QuizActivity(
-        wrongRightList: ["test", "test", "Test"],
-        results: [],
-      )
+      child: const MyHomePage()
     );
   }
 }
