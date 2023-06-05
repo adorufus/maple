@@ -122,7 +122,6 @@ class _MediaScreenState extends State<MediaScreen> {
                 height: 20.h,
               ),
               Container(
-                height: 124.h,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -499,7 +498,7 @@ class _MediaScreenState extends State<MediaScreen> {
       },
       child: Container(
         height: 40.h,
-        width: 119.w,
+        width: 150.w,
         decoration: BoxDecoration(
             color: context.watch<DashboardProviders>().selectedType ==
                     unformattedName
@@ -515,7 +514,7 @@ class _MediaScreenState extends State<MediaScreen> {
                   text: name[0] + name[1],
                   style: TextStyle(
                     fontFamily: 'Sequel',
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                   ),
                 ),
               ],

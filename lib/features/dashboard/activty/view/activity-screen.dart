@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:maple/features/dashboard/activty/view/quiz-activity.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../services/analytics_service.dart';
@@ -309,8 +310,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ActivityDetailScreen(
-                              data: data.docs[i]['activity_url'],
+                            builder: (context) => const QuizActivity(
+                              results: [],
+                              wrongRightList: [],
                             ),
                           ),
                         );

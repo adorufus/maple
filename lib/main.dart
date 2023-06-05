@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maple/features/authentication/views/auth-screen.dart';
+import 'package:maple/features/dashboard/activty/view/quiz-activity.dart';
 import 'package:maple/features/dashboard/dashboard-screen.dart';
 import 'package:maple/features/dashboard/providers/dashboard-providers.dart';
 import 'package:maple/features/introduction/views/introduction-screen.dart';
@@ -64,7 +65,10 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: const MyHomePage()
+      child: const QuizActivity(
+        wrongRightList: ["test", "test", "Test"],
+        results: [],
+      )
     );
   }
 }
