@@ -66,11 +66,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
           height: 20.h,
         ),
         FutureBuilder(
-          future: FirebaseDatabase.get(reference: 'activity')
-              .where("type", isEqualTo: "quiz")
-              .where("isHidden", isEqualTo: false)
-              .where("__name__", isNotEqualTo: "featured")
-              .get(),
+          future: FirebaseDatabase.get(reference: 'activity/games/quiz').get(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
@@ -87,57 +83,62 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   children: snapshot.data?.docs.map((e) {
                         return e["isHidden"]
                             ? Container()
-                            : Container(
-                                height: 204.h,
-                                width: 165.w,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            e["activity_image_url"]),
-                                        fit: BoxFit.cover),
-                                    borderRadius: BorderRadius.circular(8.r)),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(8.r),
-                                    bottomRight: Radius.circular(8.r),
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Container(
-                                      height: 62.h,
-                                      width: double.infinity,
-                                      color: Color(0xff252327),
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 7.h, horizontal: 8.w),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Quiz",
-                                            style: TextStyle(
-                                                color: Color(0xff717171),
-                                                fontFamily: "Sequel",
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 10.sp),
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                              e["activity_title"],
+                            : GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ActivityDetailScreen(data: "https://mapleapp-7c7ab.web.app/game?gameId=" + e["uid"])));
+                          },
+                              child: Container(
+                                  height: 204.h,
+                                  width: 165.w,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              e["item_image_url"][1]),
+                                          fit: BoxFit.cover),
+                                      borderRadius: BorderRadius.circular(8.r)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(8.r),
+                                      bottomRight: Radius.circular(8.r),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Container(
+                                        height: 62.h,
+                                        width: double.infinity,
+                                        color: Color(0xff252327),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 7.h, horizontal: 8.w),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Quiz",
                                               style: TextStyle(
-                                                  color: Colors.white,
+                                                  color: Color(0xff717171),
                                                   fontFamily: "Sequel",
                                                   fontWeight: FontWeight.w300,
-                                                  fontSize: 12.sp),
+                                                  fontSize: 10.sp),
                                             ),
-                                          ),
-                                        ],
+                                            Flexible(
+                                              child: Text(
+                                                e["title"],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Sequel",
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 12.sp),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              );
+                            );
                       }).toList() ??
                       [Container()],
                 );
@@ -166,99 +167,95 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
           ),
         ),
-        SizedBox(
-          height: 20.h,
-        ),
-        FutureBuilder(
-          future: FirebaseDatabase.get(reference: 'activity')
-              .where("type", isEqualTo: "game")
-              .where("isHidden", isEqualTo: false)
-              .where("__name__", isNotEqualTo: "featured")
-              .get(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Container();
-                break;
-              case ConnectionState.done:
-                if (snapshot.hasData) {
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    crossAxisSpacing: 18.w,
-                    mainAxisSpacing: 20.h,
-                    childAspectRatio: .9,
-                    children: snapshot.data?.docs.map((e) {
-                          return Container(
-                            height: 204.h,
-                            width: 165.w,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                image: DecorationImage(
-                                    image:
-                                        NetworkImage(e["activity_image_url"]),
-                                    fit: BoxFit.cover),
-                                borderRadius: BorderRadius.circular(8.r)),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(8.r),
-                                bottomRight: Radius.circular(8.r),
-                              ),
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  height: 62.h,
-                                  width: double.infinity,
-                                  color: Color(0xff252327),
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 7.h, horizontal: 8.w),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Quiz",
-                                        style: TextStyle(
-                                            color: Color(0xff717171),
-                                            fontFamily: "Sequel",
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 10.sp),
-                                      ),
-                                      Flexible(
-                                        child: Text(
-                                          e["activity_title"],
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: "Sequel",
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 12.sp),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList() ??
-                        [Container()],
-                  );
-                } else {
-                  return Container(
-                    child: const Center(
-                      child: Text(
-                        "No activity yet",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  );
-                }
-              default:
-                return Container();
-            }
-          },
-        ),
+        // SizedBox(
+        //   height: 20.h,
+        // ),
+        // FutureBuilder(
+        //   future: FirebaseDatabase.get(reference: 'activity/games/quiz').get(),
+        //   builder: (context, snapshot) {
+        //     switch (snapshot.connectionState) {
+        //       case ConnectionState.waiting:
+        //         return Container();
+        //         break;
+        //       case ConnectionState.done:
+        //         if (snapshot.hasData) {
+        //           return GridView.count(
+        //             crossAxisCount: 2,
+        //             physics: NeverScrollableScrollPhysics(),
+        //             shrinkWrap: true,
+        //             crossAxisSpacing: 18.w,
+        //             mainAxisSpacing: 20.h,
+        //             childAspectRatio: .9,
+        //             children: snapshot.data?.docs.map((e) {
+        //                   return Container(
+        //                     height: 204.h,
+        //                     width: 165.w,
+        //                     decoration: BoxDecoration(
+        //                         color: Colors.white,
+        //                         image: DecorationImage(
+        //                             image:
+        //                                 NetworkImage(e["activity_image_url"]),
+        //                             fit: BoxFit.cover),
+        //                         borderRadius: BorderRadius.circular(8.r)),
+        //                     child: ClipRRect(
+        //                       borderRadius: BorderRadius.only(
+        //                         bottomLeft: Radius.circular(8.r),
+        //                         bottomRight: Radius.circular(8.r),
+        //                       ),
+        //                       child: Align(
+        //                         alignment: Alignment.bottomCenter,
+        //                         child: Container(
+        //                           height: 62.h,
+        //                           width: double.infinity,
+        //                           color: Color(0xff252327),
+        //                           padding: EdgeInsets.symmetric(
+        //                               vertical: 7.h, horizontal: 8.w),
+        //                           child: Column(
+        //                             crossAxisAlignment:
+        //                                 CrossAxisAlignment.start,
+        //                             children: [
+        //                               Text(
+        //                                 "Quiz",
+        //                                 style: TextStyle(
+        //                                     color: Color(0xff717171),
+        //                                     fontFamily: "Sequel",
+        //                                     fontWeight: FontWeight.w300,
+        //                                     fontSize: 10.sp),
+        //                               ),
+        //                               Flexible(
+        //                                 child: Text(
+        //                                   e["activity_title"],
+        //                                   style: TextStyle(
+        //                                       color: Colors.white,
+        //                                       fontFamily: "Sequel",
+        //                                       fontWeight: FontWeight.w300,
+        //                                       fontSize: 12.sp),
+        //                                 ),
+        //                               ),
+        //                             ],
+        //                           ),
+        //                         ),
+        //                       ),
+        //                     ),
+        //                   );
+        //                 }).toList() ??
+        //                 [Container()],
+        //           );
+        //         } else {
+        //           return Container(
+        //             child: const Center(
+        //               child: Text(
+        //                 "No activity yet",
+        //                 style: TextStyle(color: Colors.white),
+        //               ),
+        //             ),
+        //           );
+        //         }
+        //       default:
+        //         return Container();
+        //     }
+        //   },
+        // ),
         // latestArticle()
       ],
     );
