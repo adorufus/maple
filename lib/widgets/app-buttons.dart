@@ -6,7 +6,7 @@ class AppButton extends StatelessWidget {
   final Color textColor;
   final Color borderColor;
   final String text;
-  final IconData icon;
+  final IconData? icon;
   final double radius;
   double height;
   double width;
@@ -17,10 +17,10 @@ class AppButton extends StatelessWidget {
       required this.textColor,
       required this.borderColor,
       required this.text,
-      required this.icon,
+      this.icon,
       required this.height,
       required this.width,
-      required this.radius})
+      this.radius = 15})
       : super(key: key);
 
   @override

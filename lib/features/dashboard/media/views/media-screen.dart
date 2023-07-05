@@ -46,7 +46,7 @@ class _MediaScreenState extends State<MediaScreen> {
                               context
                                       .watch<DashboardProviders>()
                                       .selectedType !=
-                                  'Unscene'
+                                  'Unscene' && context.watch<DashboardProviders>().selectedType.toLowerCase() != "can!"
                           ? Colors.black
                           : MapleColor.white,
                     ),
@@ -486,8 +486,10 @@ class _MediaScreenState extends State<MediaScreen> {
         if (unformattedName.toLowerCase() != 'all') {
           if (color == MapleColor.white) {
             context.read<DashboardProviders>().setColor(MapleColor.black);
+            context.read<DashboardProviders>().setMapleIcon("assets/images/logo-maple-nigga.png");
           } else {
             context.read<DashboardProviders>().setColor(color);
+            context.read<DashboardProviders>().setMapleIcon("assets/images/logo-maple-kecil.png");
           }
 
           context.read<DashboardProviders>().setType(unformattedName);
@@ -495,6 +497,7 @@ class _MediaScreenState extends State<MediaScreen> {
           context.read<DashboardProviders>().setColor(MapleColor.indigo);
           context.read<DashboardProviders>().setType('all');
           context.read<DashboardProviders>().setNavIndex(2);
+          context.read<DashboardProviders>().setMapleIcon("assets/images/logo-maple-kecil.png");
         }
       },
       child: Container(

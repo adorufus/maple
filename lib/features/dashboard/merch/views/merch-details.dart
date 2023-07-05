@@ -7,8 +7,9 @@ import '../../../../services/analytics_service.dart';
 class MerchDetails extends StatefulWidget {
   final String imageUrl;
   final String url;
+  final dynamic data;
 
-  const MerchDetails({Key? key, required this.imageUrl, required this.url}) : super(key: key);
+  const MerchDetails({Key? key, required this.imageUrl, required this.url, required this.data}) : super(key: key);
 
   @override
   State<MerchDetails> createState() => _MerchDetailsState();
@@ -92,7 +93,7 @@ class _MerchDetailsState extends State<MerchDetails> {
         extendBodyBehindAppBar: true,
         body: ListView(
           children: [
-            Image.asset(
+            Image.network(
               widget.imageUrl,
               fit: BoxFit.fill,
             ),
@@ -102,14 +103,14 @@ class _MerchDetailsState extends State<MerchDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Totebag',
+                    widget.data["title"],
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Sequel',
                         fontSize: 36.sp),
                   ),
                   Text(
-                    'Rp 100.000',
+                    widget.data["price"],
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Sequel',
@@ -118,7 +119,7 @@ class _MerchDetailsState extends State<MerchDetails> {
                   ),
                   SizedBox(height: 23.h,),
                   Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+                    widget.data["description"],
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Sequel',
