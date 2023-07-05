@@ -36,11 +36,12 @@ class _ArticleScreenState extends State<ArticleScreen> {
             color: context
                 .watch<DashboardProviders>()
                 .appBarColor,
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
             child: RichText(
               text: TextSpan(
                 style: TextStyle(
                   color: Colors.black,
+                  height: .8
                 ),
                 children: [
                   TextSpan(

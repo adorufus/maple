@@ -36,10 +36,11 @@ class _MediaScreenState extends State<MediaScreen> {
                 height: 200.h,
                 width: ScreenUtil().screenWidth,
                 color: context.watch<DashboardProviders>().appBarColor,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(
+                      height: .8,
                       color: context.watch<DashboardProviders>().selectedType !=
                                   '' &&
                               context
@@ -129,7 +130,7 @@ class _MediaScreenState extends State<MediaScreen> {
                     width: ScreenUtil().screenWidth * 1.5,
                     child: FutureBuilder<QuerySnapshot>(
                       future: FirebaseDatabase.get(reference: 'media-type')
-                          .orderBy('created_time', descending: true)
+                          .orderBy('name', descending: false)
                           .get(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -358,11 +359,11 @@ class _MediaScreenState extends State<MediaScreen> {
 
   List<Widget> allVideos() {
     return [
-      mediaList('Can!', 'CAN', '!', MapleColor.red),
+      mediaList('CAN!', 'CAN', '!', MapleColor.red),
       mediaList('Trick Room', 'TRIC', 'K ROOM', MapleColor.red),
       mediaList('Rewind', 'RE', 'WIND', MapleColor.cyan),
       mediaList('Wander', 'WAN', 'DER', MapleColor.green),
-      mediaList('Play Room', 'PLAY', 'ROOM', MapleColor.yellow),
+      mediaList('Playroom', 'PLAY', 'ROOM', MapleColor.yellow),
       mediaList('Dixi', 'DI', 'XI', MapleColor.pink),
       mediaList('Unscene', 'UNSC', 'ENE', MapleColor.black),
     ];
@@ -508,7 +509,7 @@ class _MediaScreenState extends State<MediaScreen> {
         child: Center(
           child: RichText(
             text: TextSpan(
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: unformattedName.toLowerCase() == "all" ? Colors.white : unformattedName.toLowerCase() == "can!" ?  Color(0xffFF3C0F) : Colors.black),
               children: [
                 TextSpan(
                   text: name[0] + name[1],

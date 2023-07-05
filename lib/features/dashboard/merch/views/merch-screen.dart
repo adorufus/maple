@@ -33,11 +33,12 @@ class _MerchScreenState extends State<MerchScreen> {
             height: 200.h,
             width: ScreenUtil().screenWidth,
             color: context.watch<DashboardProviders>().appBarColor,
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
             child: RichText(
               text: TextSpan(
                 style: TextStyle(
                   color: MapleColor.white,
+                  height: .8
                 ),
                 children: [
                   TextSpan(
