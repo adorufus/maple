@@ -46,7 +46,7 @@ class _MediaScreenState extends State<MediaScreen> {
                               context
                                       .watch<DashboardProviders>()
                                       .selectedType !=
-                                  'Unscene' && context.watch<DashboardProviders>().selectedType.toLowerCase() != "can!"
+                                  'Unscene' && context.watch<DashboardProviders>().selectedType.toLowerCase() != "can!" && context.watch<DashboardProviders>().selectedType.toLowerCase() != "all"
                           ? Colors.black
                           : MapleColor.white,
                     ),

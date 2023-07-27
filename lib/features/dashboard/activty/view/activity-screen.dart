@@ -85,7 +85,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                             ? Container()
                             : GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ActivityDetailScreen(data: "https://mapleapp-7c7ab.web.app/game?gameId=" + e["uid"])));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ActivityDetailScreen(data: (e["type"] == "tot" ? 'https://mapleapp-7c7ab.web.app/activity/game/thisorthat?gameId=' : 'https://mapleapp-7c7ab.web.app/activity/game/smashpass?gameId=') + e["uid"])));
                           },
                               child: Container(
                                   height: 204.h,
@@ -94,7 +94,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                       color: Colors.white,
                                       image: DecorationImage(
                                           image: NetworkImage(
-                                              e["item_image_url"][1]),
+                                              e["type"] == "tot" ? e["item_image_url"][0]["left"] : e["item_image_url"][1]),
                                           fit: BoxFit.cover),
                                       borderRadius: BorderRadius.circular(8.r)),
                                   child: ClipRRect(
